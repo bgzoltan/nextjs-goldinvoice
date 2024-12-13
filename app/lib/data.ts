@@ -34,6 +34,7 @@ export async function fetchLatestInvoices() {
     }));
     return latestInvoices;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to fetch the latest invoices.");
   }
 }

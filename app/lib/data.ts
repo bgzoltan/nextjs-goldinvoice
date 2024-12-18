@@ -8,6 +8,7 @@ import {
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
+import { customers } from "./placeholder-data";
 
 export async function fetchRevenue() {
   try {
@@ -156,17 +157,32 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-export async function fetchCustomers() {
+export async function fetchTotalCustomers(query: string) {
   try {
-    const data = await sql<CustomerField>`
-      SELECT
-        id,
-        name
+    const data = await sql`
+      SELECT COUNT(*)
       FROM customers
-      ORDER BY name ASC
+      WHERE
+		  customers.name ILIKE ${`%${query}%`} OR
+      customers.email ILIKE ${`%${query}%`}
     `;
 
-    const customers = data.rows;
+    const totalPages = Math.ceil(Number(data.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch all customers.");
+  }
+}
+
+export async function fetchCustomers() {
+  try {
+    const data = await sql`
+      SELECT 
+      FROM customers
+      WHERE
+    `;
+
     return customers;
   } catch (err) {
     console.error("Database Error:", err);
@@ -174,7 +190,8 @@ export async function fetchCustomers() {
   }
 }
 
-export async function fetchFilteredCustomers(query: string) {
+export async function fetchFilteredCustomers(query: string, page: number) {
+  const offset = (page - 1) * ITEMS_PER_PAGE;
   try {
     const data = await sql<CustomersTableType>`
 		SELECT
@@ -192,8 +209,8 @@ export async function fetchFilteredCustomers(query: string) {
         customers.email ILIKE ${`%${query}%`}
 		GROUP BY customers.id, customers.name, customers.email, customers.image_url
 		ORDER BY customers.name ASC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
 	  `;
-
     const customers = data.rows.map((customer) => ({
       ...customer,
       total_pending: formatCurrency(customer.total_pending),

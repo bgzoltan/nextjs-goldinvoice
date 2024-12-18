@@ -36,7 +36,6 @@ export async function createInvoice(prevState: State, formData: FormData) {
     amount: formData.get("amount"),
     status: formData.get("status"),
   });
-  console.log("validation ----", validatedFields);
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -104,7 +103,6 @@ export async function authenticate(
   formData: FormData
 ) {
   try {
-    console.log("SIgn In ++++++++++++++++++");
     await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {

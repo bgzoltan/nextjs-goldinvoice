@@ -8,36 +8,36 @@ export default async function CustomersTable({
 }) {
   return (
     <>
-      <div className="min-w-full mt-2 mb-2 rounded-lg bg-gray-200">
+      <div className="w-full text-sm mt-2 mb-2 rounded-lg bg-gray-200">
         <div className="p-2">
           <table className="w-full text-gray-900 ">
-            <thead className="text-left text-sm font-normal">
+            <thead className="text-left font-normal">
               <tr>
-                <th scope="col" className="px-2 py-5 font-medium">
+                <th scope="col" className="px-2 py-4 ">
                   Image
                 </th>
-                <th scope="col" className="px-2 py-5 font-medium">
+                <th scope="col" className="px-2 py-4 ">
                   Name
                 </th>
-                <th scope="col" className="px-2 py-5 font-medium">
+                <th scope="col" className="px-2 py-4 ">
                   e-mail
                 </th>
-                <th scope="col" className="px-2 py-5 font-medium">
+                <th scope="col" className="px-2 py-4 ">
                   Total invoice
                 </th>
-                <th scope="col" className="px-2 py-5 font-medium">
+                <th scope="col" className="px-2 py-4 ">
                   Total paid
                 </th>
-                <th scope="col" className="px-2 py-5 font-medium">
+                <th scope="col" className="px-2 py-4 ">
                   Total pending
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white p-2">
+            <tbody className="bg-white">
               {customers.map((customer) => (
                 <tr
                   key={customer.id}
-                  className="border-gray-200 border-2 border-solid"
+                  className="border-gray-200 border-1 border-solid"
                 >
                   <td className="p-2">
                     <Image

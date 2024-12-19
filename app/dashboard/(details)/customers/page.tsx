@@ -5,6 +5,7 @@ import Pagination from "@/app/ui/invoices/pagination";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import PageTitle from "@/app/ui/page-title";
 import { suse } from "@/app/ui/fonts";
+import { CreateCustomer } from "@/app/ui/customers/buttons";
 
 export default async function Page(props: {
   searchParams?: Promise<{
@@ -32,9 +33,11 @@ export default async function Page(props: {
             },
           ]}
         />
-        <div className="w-full">
+        <div className="w-full flex justify-between gap-2">
           <Search placeholder="Enter a customer name..." />
+          <CreateCustomer />
         </div>
+
         <Table customers={customers} />
         <div className="flex flex-row justify-center w-full">
           <Pagination totalPages={totalCustomers} />

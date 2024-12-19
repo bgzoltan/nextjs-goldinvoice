@@ -116,3 +116,15 @@ export async function authenticate(
     throw error;
   }
 }
+
+export async function createCustomer(prevState: State, formData: FormData) {
+  return null;
+}
+
+export async function updateCustomer(id: string, formData: FormData) {
+  return null;
+}
+
+export async function deleteCustomer(id: string) {
+  return null;
+}

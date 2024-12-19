@@ -7,6 +7,8 @@ import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 import { fetchInvoicesPages } from "@/app/lib/data";
 import { Metadata } from "next/dist/lib/metadata/types/metadata-interface";
+import PageTitle from "@/app/ui/page-title";
+import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Invoices",
@@ -24,10 +26,21 @@ export default async function Page(props: {
   const totalPages = await fetchInvoicesPages(query);
   return (
     <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Invoices</h1>
-      </div>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+      <PageTitle title="Invoices list" />
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: "Dashboard", href: "/dashboard" },
+          {
+            label: "Invoices list",
+            href: "/dashboard/invoices",
+            active: true,
+          },
+        ]}
+      />
+      <div
+        className="mt-4 flex items-center 
+      justify-between gap-2 md:mt-8"
+      >
         <Search placeholder="Search invoices..." />
         <CreateInvoice />
       </div>

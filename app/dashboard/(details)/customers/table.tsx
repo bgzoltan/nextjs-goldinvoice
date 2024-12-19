@@ -1,4 +1,5 @@
 import { FormattedCustomersTable } from "@/app/lib/definitions";
+import { DeleteCustomer, UpdateCustomer } from "@/app/ui/customers/buttons";
 import Image from "next/image";
 
 export default async function CustomersTable({
@@ -53,6 +54,12 @@ export default async function CustomersTable({
                   <td className="p-2">{customer.total_invoices}</td>
                   <td className="p-2">{customer.total_paid}</td>
                   <td className="p-2">{customer.total_pending}</td>
+                  <td className="p-2">
+                    <div className="flex justify-end gap-2">
+                      <UpdateCustomer id={customer.id} />
+                      <DeleteCustomer id={customer.id} />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

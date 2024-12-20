@@ -33,7 +33,7 @@ export default async function Page(props: {
             },
           ]}
         />
-        <div className="w-full flex justify-between gap-2">
+        <div className="w-full flex justify-between">
           <Search placeholder="Enter a customer name..." />
           <CreateCustomer />
         </div>

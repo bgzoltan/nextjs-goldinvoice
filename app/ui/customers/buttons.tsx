@@ -1,6 +1,11 @@
+"use client";
+
 import { deleteCustomer } from "@/app/lib/actions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useState } from "react";
+import Confirm from "../confirm-modal";
+import { SelectUserI } from "@/app/dashboard/(details)/customers/tableItems";
 
 export function CreateCustomer() {
   return (
@@ -25,15 +30,54 @@ export function UpdateCustomer({ id }: { id: string }) {
   );
 }
 
-export function DeleteCustomer({ id }: { id: string }) {
-  const deleteCustomerWithId = deleteCustomer.bind(null, id);
-
+interface DeleteCustomerI {
+  selectUser: SelectUserI;
+  handleSelectUser: (selectUser: SelectUserI) => void;
+  id: string;
+}
+export function DeleteCustomer({
+  selectUser,
+  handleSelectUser,
+  id,
+}: DeleteCustomerI) {
+  const [loading, setLoading] = useState(false);
+  async function DeleteUser() {
+    setLoading(true);
+    const deleteCustomerWithId = deleteCustomer.bind(null, selectUser.id);
+    await deleteCustomerWithId();
+    handleSelectUser({ ...selectUser, isSelect: false });
+    setLoading(false);
+  }
+  function handleConfirm(value: boolean) {
+    if (value) DeleteUser();
+    handleSelectUser({ ...selectUser, isDelete: false, isSelect: false });
+  }
   return (
-    <form action={deleteCustomerWithId}>
-      <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
+    <>
+      {loading && (
+        <div className="fixed left-0 top-0 w-screen h-screen flex justify-center items-center ">
+          <div className="flex justify-center items-center w-40 h-32 bg-gray-200 p-2 rounded-lg">
+            <div className="bg-blue-400 p-2">Loading...</div>
+          </div>
+        </div>
+      )}
+      <button
+        onClick={() => {
+          handleSelectUser({
+            ...selectUser,
+            id: id,
+            isDelete: true,
+            isSelect: true,
+          });
+        }}
+        className="rounded-md border p-2 hover:bg-gray-100"
+      >
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
       </button>
-    </form>
+      {selectUser.isDelete && (
+        <Confirm title="Delete user" handleConfirm={handleConfirm} />
+      )}
+    </>
   );
 }

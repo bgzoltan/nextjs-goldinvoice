@@ -1,6 +1,6 @@
 import { sql } from "@vercel/postgres";
 import {
-  CustomerField,
+  Customer,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
@@ -8,7 +8,6 @@ import {
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
-import { customers } from "./placeholder-data";
 
 export async function fetchRevenue() {
   try {
@@ -177,12 +176,13 @@ export async function fetchTotalCustomers(query: string) {
 
 export async function fetchCustomers() {
   try {
-    const data = await sql`
-      SELECT 
+    const data = await sql<Customer>`
+      SELECT *
       FROM customers
-      WHERE
+      ORDER BY name ASC
     `;
 
+    const customers = data.rows;
     return customers;
   } catch (err) {
     console.error("Database Error:", err);

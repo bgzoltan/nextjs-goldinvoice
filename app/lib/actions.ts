@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { v2 as cloudinary } from "cloudinary";
+import { CreateCustomer } from "./definitions";
 
 export type State = {
   errors?: {
@@ -117,8 +119,63 @@ export async function authenticate(
   }
 }
 
-export async function createCustomer(prevState: State, formData: FormData) {
-  return null;
+// Create formschema for Zod validation library
+const CustomerFormSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email("Invalid email"),
+  image_url: z.string(),
+});
+
+const CreateCustomerSchema = CustomerFormSchema.omit({
+  id: true,
+  image_url: true,
+});
+
+export async function createCustomer(customer: CreateCustomer) {
+  const picture = customer.picture;
+
+  try {
+    if (!customer.name || !customer.email || picture.size === 0)
+      throw new Error(`Please fill in all fields and select an image!`);
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  // Validate with Zod parse method
+  const { name, email } = CreateCustomerSchema.parse({
+    name: customer.name,
+    email: customer.email,
+  });
+
+  // email database validation
+  try {
+    const response =
+      await sql`SELECT * FROM customers WHERE (email ILIKE ${email} or name ILIKE ${name}) `;
+    if (response.rows.length !== 0)
+      throw new Error(
+        `The ${name} or the ${email} is already in the database!`
+      );
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  const image_url = await saveFile(picture);
+
+  try {
+    // Insert data into database
+    await sql`
+   INSERT INTO customers (name, email, image_url)
+   VALUES (${name}, ${email}, ${image_url})
+  `;
+  } catch (error) {
+    throw new Error("There is a problem creating a customer");
+  }
+  // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
+  revalidatePath("/dashboard/customers");
+  return;
 }
 
 export async function updateCustomer(id: string, formData: FormData) {
@@ -133,4 +190,27 @@ export async function deleteCustomer(id: string) {
     console.log(error);
     throw new Error("Database Error: Failed to Delete Customer!");
   }
+}
+
+interface UploadResult {
+  url: string;
+}
+
+async function saveFile(file: File) {
+  // Saving file to cloudinary cloud and return the url - it is necessary to define the images domain is next.config.js file
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = new Uint8Array(arrayBuffer);
+  const result = await new Promise<UploadResult>((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({}, function (error, result) {
+        if (error || result === undefined) {
+          reject(error || new Error("Upload result is undefined."));
+          return;
+        }
+        resolve(result);
+      })
+      .end(buffer);
+  });
+
+  return result.url;
 }

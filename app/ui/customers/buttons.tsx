@@ -6,27 +6,25 @@ import Link from "next/link";
 import { useState } from "react";
 import Confirm from "../confirm-modal";
 import { SelectUserI } from "@/app/dashboard/(details)/customers/tableItems";
+import CustomLink from "../custom-link";
+import CustomButton from "../custom-button";
 
 export function CreateCustomer() {
   return (
-    <Link
-      href="/dashboard/customers/create"
-      className="flex h-10 items-center rounded-lg bg-green-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-    >
-      <span className="hidden md:block">Create Customer</span>
-      <PlusIcon className="h-5 md:ml-4" />
-    </Link>
+    <CustomLink linkType="primary" href="/dashboard/customers/create">
+      Create Customer
+      <span className="sr-only">Create</span>
+      <PlusIcon className="h-5" />
+    </CustomLink>
   );
 }
 
 export function UpdateCustomer({ id }: { id: string }) {
   return (
-    <Link
-      href={`/dashboard/customers/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
-    >
+    <CustomLink linkType="secondary" href={`/dashboard/customers/${id}/edit`}>
+      <span className="sr-only">Edit</span>
       <PencilIcon className="w-5" />
-    </Link>
+    </CustomLink>
   );
 }
 
@@ -61,7 +59,8 @@ export function DeleteCustomer({
           </div>
         </div>
       )}
-      <button
+      <CustomButton
+        buttonType="secondary"
         onClick={() => {
           handleSelectUser({
             ...selectUser,
@@ -70,11 +69,10 @@ export function DeleteCustomer({
             isSelect: true,
           });
         }}
-        className="rounded-md border p-2 hover:bg-gray-100"
       >
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
-      </button>
+      </CustomButton>
       {selectUser.isDelete && (
         <Confirm title="Delete user" handleConfirm={handleConfirm} />
       )}

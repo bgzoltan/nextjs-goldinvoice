@@ -1,12 +1,16 @@
 "use client";
 
-import { AtSymbolIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUpOnSquareIcon,
+  AtSymbolIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import router from "next/router";
 import { ChangeEvent, useState } from "react";
 import ShowMessage from "../show-message";
-import Link from "next/link";
-import { Button } from "../button";
 import { createCustomer } from "@/app/lib/actions";
+import CustomLink from "../custom-link";
+import CustomButton from "../custom-button";
 
 export type Type = "critical error" | "error" | "user info";
 
@@ -152,16 +156,13 @@ export default function CreateCustomerForm() {
         </div>
         <div></div>
         <div className="container grid grid-cols-2 text-right items-center">
-          <div className="flex justify-end relative">
-            <div className="pr-2">
-              <label
-                htmlFor="user-image"
-                className="peer w-32 rounded-lg border text-white bg-blue-600 p-2 text-sm outline-2 block cursor-pointer "
-              >
+          <div className="flex justify-end pr-2">
+            <CustomButton buttonType="primary" type="button">
+              <label htmlFor="user-image" className="peer block cursor-pointer">
                 Upload a picture
               </label>
-            </div>
-
+              <ArrowUpOnSquareIcon className="w-5 ml-2" />
+            </CustomButton>
             <input
               type="file"
               id="user-image"
@@ -170,19 +171,18 @@ export default function CreateCustomerForm() {
               onChange={(e) => fileValidation(e)}
             />
           </div>
-          <div className="bg-white rounded-lg text-sm p-2 outline outline-1">
+          <span className="bg-white rounded-lg text-sm p-2 outline outline-1">
             {fileName}
-          </div>
+          </span>
         </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/customers"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
+        <CustomLink linkType="secondary" href="/dashboard/customers">
           Cancel
-        </Link>
-        <Button type="submit">Create Customer</Button>
+        </CustomLink>
+        <CustomButton buttonType="primary" type="submit">
+          Create Customer
+        </CustomButton>
       </div>
       <ShowMessage message={message} handleMessageClick={handleMessageClick} />
     </form>

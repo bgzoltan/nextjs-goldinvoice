@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { v2 as cloudinary } from "cloudinary";
-import { CreateCustomer } from "./definitions";
+import { CreateModifyCustomer } from "./definitions";
 
 export type State = {
   errors?: {
@@ -124,15 +124,17 @@ const CustomerFormSchema = z.object({
   id: z.string(),
   name: z.string(),
   email: z.string().email("Invalid email"),
-  image_url: z.string(),
+  imageUrl: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
 });
 
 const CreateCustomerSchema = CustomerFormSchema.omit({
   id: true,
-  image_url: true,
+  imageUrl: true,
 });
 
-export async function createCustomer(customer: CreateCustomer) {
+export async function createCustomer(customer: CreateModifyCustomer) {
   const picture = customer.picture;
 
   try {
@@ -178,8 +180,75 @@ export async function createCustomer(customer: CreateCustomer) {
   return;
 }
 
-export async function updateCustomer(id: string, formData: FormData) {
-  return null;
+export async function updateCustomer(
+  id: string,
+  customer: CreateModifyCustomer
+) {
+  try {
+    if (!customer.name || !customer.email)
+      throw new Error(`Please fill in all fields and select an image!`);
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  // Validate with Zod parse method
+  const { name, firstName, lastName, email } = CreateCustomerSchema.parse({
+    name: customer.firstName + " " + customer.lastName,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
+    email: customer.email,
+  });
+
+  // email database validation
+  try {
+    const response =
+      await sql`SELECT * FROM customers WHERE (email ILIKE ${email} and name NOT ILIKE ${name}) `;
+    if (response.rows.length !== 0)
+      throw new Error(
+        `The ${name} or the ${email} is already in the database!`
+      );
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  try {
+    if (customer.userImage.size > 8000) {
+      throw new Error(`The size of the uploaded file is more than 8000!`);
+    } else {
+      if (
+        !["image/webp", "image/jpeg", "image/png"].some((str) =>
+          customer.userImage.type.includes(str)
+        ) &&
+        customer.userImage.size !== 0
+      ) {
+        throw new Error(`Thefile type is not good!`);
+      }
+    }
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  let imageUrl = customer.imageUrl;
+  if (customer.userImage.size > 0)
+    imageUrl = await saveFile(customer.userImage);
+  console.log("UPDATING ===", name, firstName, lastName, id);
+
+  try {
+    // Insert data into database
+    await sql`
+      UPDATE customers
+      SET name=${name}, first_name=${firstName}, last_name=${lastName}, email=${email}, image_url=${imageUrl}
+      WHERE id=${id}
+    `;
+  } catch (error) {
+    throw new Error("There is a problem updating a customer");
+  }
+  // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
+  revalidatePath("/dashboard/customers");
+  return;
 }
 
 export async function deleteCustomer(id: string) {

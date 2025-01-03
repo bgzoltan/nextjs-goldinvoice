@@ -14,7 +14,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="flex h-full flex-col items-center justify-center">
+    <div className="fixed left-0 top-0 flex w-screen h-screen justify-center items-center border-2 border-solid border-red-500 bg-blue-300">
       <h2 className="text-center">Something went wrong!</h2>
       <p>{error.message}</p>
       <button
@@ -23,6 +23,6 @@ export default function Error({
       >
         Try again
       </button>
-    </main>
+    </div>
   );
 }

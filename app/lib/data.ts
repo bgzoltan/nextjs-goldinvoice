@@ -223,3 +223,26 @@ export async function fetchFilteredCustomers(query: string, page: number) {
     throw new Error("Failed to fetch customer table.");
   }
 }
+
+export async function fetchCustomerById(id: string) {
+  try {
+    const data = await sql`
+      SELECT *
+      FROM customers
+      WHERE id=${id}
+    `;
+
+    const customerData = data.rows[0];
+    const customer: Customer = {
+      id: customerData.id,
+      name: customerData.name,
+      firstName: customerData.first_name,
+      lastName: customerData.last_name,
+      email: customerData.email,
+      imageUrl: customerData.image_url,
+    };
+    return customer;
+  } catch (error) {
+    console.log("Error", error);
+  }
+}

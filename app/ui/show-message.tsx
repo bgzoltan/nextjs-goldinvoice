@@ -1,4 +1,5 @@
-import { Message } from "../lib/definitions";
+import { Message, MessageType } from "../lib/definitions";
+import CustomButton from "./custom-button";
 
 interface ShowMessageProp {
   message: Message;
@@ -9,38 +10,33 @@ export default function ShowMessage({
   message,
   handleMessageClick,
 }: ShowMessageProp) {
-  let bgColor = "black";
+  let bgColor = "";
+  let title = "";
 
-  switch (message.type) {
-    case "user info":
-      bgColor = "mediumseagreen";
-      break;
-    case "critical error":
-      bgColor = "tomato";
-      break;
-    case "error":
-      bgColor = "orange";
-      break;
-    default:
-      bgColor = "violet";
+  if (message.type == MessageType.Error) {
+    bgColor = "red";
+    title = MessageType.Error;
+  } else {
+    bgColor = "green";
+    title = MessageType.Information;
   }
 
   return (
     <>
-      {message.showMessage && (
+      {message.show && (
         <div className="fixed left-0 top-0 flex w-screen h-screen justify-center items-center">
           <div
             className="flex flex-col justify-center items-center min-w-52 p-2 rounded text-white"
             style={{ backgroundColor: bgColor }}
           >
-            <p className="p-1">{message.type.toUpperCase()}</p>
+            <p className="text-lg">{title}</p>
             <p className="p-1">{message?.content}</p>
-            <button
-              className="w-24 bg-gray-400 text-white rounded p-1"
-              onClick={handleMessageClick}
+            <CustomButton
+              buttonType="primary"
+              onClick={() => handleMessageClick()}
             >
-              OK
-            </button>
+              Close
+            </CustomButton>
           </div>
         </div>
       )}

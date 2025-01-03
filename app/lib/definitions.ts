@@ -13,11 +13,13 @@ export type Customer = {
   id: string;
   name: string;
   email: string;
-  image_url: string;
+  imageUrl: string;
+  firstName: string;
+  lastName: string;
 };
 
-export interface CreateCustomer extends Omit<Customer, "id" | "image_url"> {
-  picture: File;
+export interface CreateModifyCustomer extends Omit<Customer, "id"> {
+  userImage: File;
 }
 
 export type Invoice = {
@@ -91,11 +93,15 @@ export type InvoiceForm = {
   status: "pending" | "paid";
 };
 
-export type Type = "critical error" | "error" | "user info";
+export enum MessageType {
+  Error = "Error",
+  Information = "Information",
+  Empty = "",
+}
 
 export interface Message {
-  type: Type | "";
+  type: MessageType;
   content: string;
-  showMessage: boolean;
-  redirect: string;
+  show: boolean;
+  redirect: boolean;
 }

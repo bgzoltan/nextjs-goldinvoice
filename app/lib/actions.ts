@@ -135,10 +135,8 @@ const CreateCustomerSchema = CustomerFormSchema.omit({
 });
 
 export async function createCustomer(customer: CreateModifyCustomer) {
-  const picture = customer.picture;
-
   try {
-    if (!customer.name || !customer.email || picture.size === 0)
+    if (!customer.name || !customer.email)
       throw new Error(`Please fill in all fields and select an image!`);
   } catch (error) {
     // Return an error to the client side
@@ -146,31 +144,34 @@ export async function createCustomer(customer: CreateModifyCustomer) {
   }
 
   // Validate with Zod parse method
-  const { name, email } = CreateCustomerSchema.parse({
-    name: customer.name,
+  const validatedCustomer = CreateCustomerSchema.parse({
+    name: customer.firstName + " " + customer.lastName,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     email: customer.email,
   });
 
   // email database validation
   try {
     const response =
-      await sql`SELECT * FROM customers WHERE (email ILIKE ${email} or name ILIKE ${name}) `;
+      await sql`SELECT * FROM customers WHERE (email ILIKE ${validatedCustomer.email} or name ILIKE ${validatedCustomer.name}) `;
     if (response.rows.length !== 0)
       throw new Error(
-        `The ${name} or the ${email} is already in the database!`
+        `The ${validatedCustomer.name} or the ${validatedCustomer.email} is already in the database!`
       );
   } catch (error) {
     // Return an error to the client side
     if (error instanceof Error) return { error: error.message };
   }
 
-  const image_url = await saveFile(picture);
+  const image_url =
+    customer.userImage.size > 0 ? await saveFile(customer.userImage) : "";
 
   try {
     // Insert data into database
     await sql`
-   INSERT INTO customers (name, email, image_url)
-   VALUES (${name}, ${email}, ${image_url})
+   INSERT INTO customers (first_name,last_name,name, email, image_url)
+   VALUES (${validatedCustomer.firstName},${validatedCustomer.lastName},${validatedCustomer.name}, ${validatedCustomer.email}, ${image_url})
   `;
   } catch (error) {
     throw new Error("There is a problem creating a customer");

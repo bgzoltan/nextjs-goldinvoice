@@ -5,114 +5,88 @@ import {
   AtSymbolIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import ShowMessage from "../show-message";
 import { createCustomer } from "@/app/lib/actions";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";
-
-export type Type = "critical error" | "error" | "user info";
-
-export interface Message {
-  type: Type | "";
-  content: string;
-  showMessage: boolean;
-  redirect: string;
-}
+import { Message, MessageType } from "@/app/lib/definitions";
+import CustomLoading from "../custom-loading";
+import { SubmitButton } from "./submit-button";
 
 export default function CreateCustomerForm() {
-  const [fileName, setFileName] = useState<string>("No selected picture");
-
+  const [fileName, setFileName] = useState<string>("");
+  const [isLoading, setIsLoading] = useState({ state: false, text: "" });
   const [message, setMessage] = useState<Message>({
+    type: MessageType.Empty,
     content: "",
-    type: "",
-    showMessage: false,
-    redirect: "",
+    show: false,
+    redirect: false,
   });
 
+  const router = useRouter();
+  const handleLoading = (state: boolean, text: string) => {
+    setIsLoading({ ...isLoading, state, text });
+  };
+
   const handleMessageClick = () => {
-    const newMessage: Message | null = {
+    setMessage({
       ...message,
-      showMessage: false,
-      redirect: "",
-    };
-    setFileName("There is no selected file.");
-    setMessage(newMessage);
-    if (message.redirect !== "") {
-      router.push(message.redirect);
+      show: false,
+    });
+    if (message.redirect) {
+      handleLoading(true, "Redirecting...");
+      router.push("/dashboard/customers");
     }
   };
 
-  const fileValidation = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setMessage({
-        ...message,
-        content: "There is no selected file",
-        type: "user info",
-        showMessage: true,
-      });
-      return;
-    }
-
-    if (e.target.files[0].size < 10000) setFileName(e.target.files[0].name);
-    else {
-      setMessage({
-        ...message,
-        content: "The size of the file is too large!",
-        type: "error",
-        showMessage: true,
-      });
-    }
-    const file = e.target.files[0];
-
-    if (
-      !["image/webp", "image/jpeg", "image/png"].find(
-        (element) => element === file.type
-      )
-    ) {
-      setMessage({
-        ...message,
-        content: "This is not an image file",
-        type: "error",
-        showMessage: true,
-      });
-    }
+  const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setFileName(`${e.target.files[0].name}`);
   };
 
   async function onSubmit(formData: FormData) {
-    const firstName = formData.get("firstName");
-    const lastName = formData.get("lastName");
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
     const name = `${firstName} ${lastName}`;
     const email = formData.get("email") as string;
-    const picture = formData.get("userImage") as File;
+    const userImageFile = formData.get("user-image") as File;
 
     const result = await createCustomer({
       name: name,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
-      picture: picture,
+      imageUrl: "",
+      userImage: userImageFile,
     });
 
     if (!result) {
       setMessage({
         ...message,
-        content: "Form submitted successfully",
-        type: "user info",
-        showMessage: true,
-        redirect: "/dashboard/customers",
+        content: "Form is updated successfully.",
+        type: MessageType.Information,
+        show: true,
+        redirect: true,
       });
     } else if (result.error) {
       setMessage({
         ...message,
         content: result.error,
-        type: "critical error",
-        showMessage: true,
+        type: MessageType.Error,
+        show: true,
       });
     }
   }
 
   return (
     <div className="w-full relative text-sm p-2 rounded-lg bg-gray-200">
+      {isLoading.state && (
+        <div className="fixed z-0 top-0 left-0 w-full h-full flex justify-center items-center">
+          <CustomLoading>{isLoading.text}</CustomLoading>
+        </div>
+      )}
       <form action={onSubmit} className="bg-white">
         <div className="container m-auto grid grid-rows-3 grid-cols-2 gap-2 w-full p-2">
           <div className="container grid grid-cols-2 text-right items-center">
@@ -167,9 +141,9 @@ export default function CreateCustomerForm() {
               <input
                 type="file"
                 id="user-image"
-                name="userImage"
+                name="user-image"
                 className="peer w-full rounded-lg border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500 hidden"
-                onChange={(e) => fileValidation(e)}
+                onChange={(e) => handleFileInput(e)}
               />
             </div>
             <span className="bg-white rounded-lg text-sm p-2 outline outline-1">
@@ -181,9 +155,7 @@ export default function CreateCustomerForm() {
           <CustomLink linkType="secondary" href="/dashboard/customers">
             Cancel
           </CustomLink>
-          <CustomButton buttonType="primary" type="submit">
-            Create Customer
-          </CustomButton>
+          <SubmitButton handleLoading={handleLoading} />
         </div>
         <ShowMessage
           message={message}

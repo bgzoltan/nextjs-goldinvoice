@@ -8,6 +8,7 @@ import Confirm from "../confirm-modal";
 import { SelectUserI } from "@/app/dashboard/(details)/customers/tableItems";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";
+import CustomLoading from "../custom-loading";
 
 export function CreateCustomer() {
   return (
@@ -38,13 +39,18 @@ export function DeleteCustomer({
   handleSelectUser,
   id,
 }: DeleteCustomerI) {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState({ state: false, text: "" });
+
+  const handleLoading = (state: boolean, text: string) => {
+    setIsLoading({ ...isLoading, state, text });
+  };
+
   async function DeleteUser() {
-    setLoading(true);
+    handleLoading(true, "Deleting...");
     const deleteCustomerWithId = deleteCustomer.bind(null, selectUser.id);
     await deleteCustomerWithId();
-    handleSelectUser({ ...selectUser, isSelect: false });
-    setLoading(false);
+    handleSelectUser({ ...selectUser, isDelete: false, isSelect: false });
+    handleLoading(false, "");
   }
   function handleConfirm(value: boolean) {
     if (value) DeleteUser();
@@ -52,11 +58,9 @@ export function DeleteCustomer({
   }
   return (
     <>
-      {loading && (
-        <div className="fixed left-0 top-0 w-screen h-screen flex justify-center items-center ">
-          <div className="flex justify-center items-center w-40 h-32 bg-gray-200 p-2 rounded-lg">
-            <div className="bg-blue-400 p-2">Loading...</div>
-          </div>
+      {isLoading.state && (
+        <div className="fixed z-0 top-0 left-0 w-full h-full flex justify-center items-center">
+          <CustomLoading>{isLoading.text}</CustomLoading>
         </div>
       )}
       <CustomButton

@@ -31,7 +31,6 @@ export function TableItems({ customer }: TableItemsI) {
   };
   return (
     <tr
-      key={customer.id}
       className={`${
         selectUser.isSelect && selectUser.id == customer.id
           ? "bg-gray-300"

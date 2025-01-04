@@ -21,9 +21,9 @@ export function SubmitButton({ handleLoading }: SubmitButtonProps) {
       <CustomButton
         buttonType="primary"
         type="submit"
-        onClick={() => handleLoading(true, "Updating...")}
+        onClick={() => handleLoading(true, "Saving...")}
       >
-        Modify Customer
+        Submit
       </CustomButton>
     </div>
   );

@@ -35,7 +35,7 @@ export default function CustomersTable({
             </thead>
             <tbody className="bg-white relative">
               {customers.map((customer) => (
-                <TableItems customer={customer} />
+                <TableItems customer={customer} key={customer.id} />
               ))}
             </tbody>
           </table>

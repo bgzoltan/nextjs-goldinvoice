@@ -5,7 +5,7 @@ import {
   AtSymbolIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { ChangeEvent, useEffect, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ShowMessage from "../show-message";
 import { updateCustomer } from "@/app/lib/actions";
 import CustomLink from "../custom-link";
@@ -177,6 +177,7 @@ export default function EditCustomerForm({
                   type="file"
                   id="user-image"
                   name="user_image"
+                  defaultValue={""}
                   className="peer w-full rounded-lg border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500 hidden"
                   onChange={(e) => handleFileInput(e)}
                 />

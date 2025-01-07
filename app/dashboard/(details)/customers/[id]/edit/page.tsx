@@ -1,4 +1,4 @@
-import { fetchCustomerById, fetchCustomers } from "@/app/lib/data";
+import { fetchCustomerById } from "@/app/lib/data";
 import EditCustomerForm from "@/app/ui/customers/edit-customer";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import PageTitle from "@/app/ui/page-title";

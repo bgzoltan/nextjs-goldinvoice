@@ -174,7 +174,7 @@ export async function createCustomer(customer: CreateModifyCustomer) {
    VALUES (${validatedCustomer.firstName},${validatedCustomer.lastName},${validatedCustomer.name}, ${validatedCustomer.email}, ${image_url})
   `;
   } catch (error) {
-    throw new Error("There is a problem creating a customer");
+    throw new Error(`There is a problem creating a customer: ${error}`);
   }
   // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
   revalidatePath("/dashboard/customers");
@@ -245,7 +245,7 @@ export async function updateCustomer(
       WHERE id=${id}
     `;
   } catch (error) {
-    throw new Error("There is a problem updating a customer");
+    throw new Error(`There is a problem updating a customer: ${error}`);
   }
   // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
   revalidatePath("/dashboard/customers");

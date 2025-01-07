@@ -2,7 +2,6 @@
 
 import { deleteCustomer } from "@/app/lib/actions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import { useState } from "react";
 import Confirm from "../confirm-modal";
 import { SelectUserI } from "@/app/dashboard/(details)/customers/tableItems";

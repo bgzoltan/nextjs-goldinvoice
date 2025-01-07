@@ -106,15 +106,19 @@ export default function EditCustomerForm({
       <form action={onSubmit} className="bg-white flex flex-col">
         <div className="flex">
           <div className="w-50 p-2">
-            <Image
-              src={`${
-                fileName.includes("http") ? fileName : "/customers/" + fileName
-              }`}
-              className="rounded-full"
-              width={100}
-              height={100}
-              alt={`${customer.name}'s profile picture`}
-            />
+            {fileName !== "" && (
+              <Image
+                src={`${
+                  fileName.includes("http")
+                    ? fileName
+                    : "/customers/" + fileName
+                }`}
+                className="rounded-full"
+                width={100}
+                height={100}
+                alt={`${customer.name}'s profile picture`}
+              />
+            )}
           </div>
           <div className="container m-auto grid grid-rows-3 grid-cols-2 gap-2 w-full p-2">
             <div className="container grid grid-cols-2 text-right items-center">

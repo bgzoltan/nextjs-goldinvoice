@@ -38,13 +38,15 @@ export function TableItems({ customer }: TableItemsI) {
       } border-gray-200 border-1 border-solid static`}
     >
       <td className="p-2">
-        <Image
-          src={customer.image_url}
-          className="rounded-full"
-          width={28}
-          height={28}
-          alt={`${customer.name}'s profile picture`}
-        />
+        {customer.image_url !== "" && (
+          <Image
+            src={customer.image_url}
+            className="rounded-full"
+            width={28}
+            height={28}
+            alt={`${customer.name}'s profile picture`}
+          />
+        )}
       </td>
       <td className="p-2">{customer.name}</td>
       <td className="p-2">{customer.email}</td>

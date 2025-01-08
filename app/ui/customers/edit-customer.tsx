@@ -1,20 +1,11 @@
 "use client";
 
-import {
-  ArrowUpOnSquareIcon,
-  AtSymbolIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ShowMessage from "../show-message";
 import { updateCustomer } from "@/app/lib/actions";
-import CustomLink from "../custom-link";
-import CustomButton from "../custom-button";
 import { Customer, Message, MessageType } from "@/app/lib/definitions";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import CustomLoading from "../custom-loading";
-import { SubmitButton } from "./submit-button";
 import { EditForm } from "./edit-form";
 
 interface EditCustomerFormProp {

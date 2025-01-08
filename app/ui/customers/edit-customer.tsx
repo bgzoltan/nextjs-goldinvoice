@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ShowMessage from "../show-message";
 import { updateCustomer } from "@/app/lib/actions";
 import { Customer, Message, MessageType } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import CustomLoading from "../custom-loading";
 import { EditForm } from "./edit-form";
+import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 
 interface EditCustomerFormProp {
   id: string;
@@ -17,35 +18,14 @@ export default function EditCustomerForm({
   id,
   customer,
 }: EditCustomerFormProp) {
-  const [isLoading, setIsLoading] = useState({ state: false, text: "" });
-  const [message, setMessage] = useState<Message>({
-    type: MessageType.Empty,
-    content: "",
-    show: false,
-    redirect: false,
-  });
-
   const router = useRouter();
-
-  const handleLoading = (state: boolean, text: string) => {
-    setIsLoading({ ...isLoading, state, text });
-  };
+  const { message, handleMessage, handleMessageClick, isLoading } =
+    useMessageAndLoading();
 
   useEffect(() => {
     // prefetching the route to get faster redirect
     router.prefetch("/dashboard/customers");
   }, []);
-
-  const handleMessageClick = () => {
-    setMessage({
-      ...message,
-      show: false,
-    });
-    if (message.redirect) {
-      handleLoading(true, "Redirecting...");
-      router.push("/dashboard/customers");
-    }
-  };
 
   async function onSubmit(formData: FormData) {
     const firstName = formData.get("firstName") as string;
@@ -64,7 +44,7 @@ export default function EditCustomerForm({
     });
 
     if (!response) {
-      setMessage({
+      handleMessage({
         ...message,
         content: "Form is updated successfully.",
         type: MessageType.Information,
@@ -72,7 +52,7 @@ export default function EditCustomerForm({
         redirect: true,
       });
     } else if (response.error) {
-      setMessage({
+      handleMessage({
         ...message,
         content: response.error,
         type: MessageType.Error,
@@ -88,12 +68,8 @@ export default function EditCustomerForm({
           <CustomLoading>{isLoading.text}</CustomLoading>
         </div>
       )}
-      <EditForm
-        customer={customer}
-        onSubmit={onSubmit}
-        handleLoading={handleLoading}
-      />
-      <ShowMessage message={message} handleMessageClick={handleMessageClick} />
+      <EditForm customer={customer} onSubmit={onSubmit} />
+      <ShowMessage />
     </div>
   );
 }

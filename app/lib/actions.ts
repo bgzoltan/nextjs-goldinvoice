@@ -235,7 +235,6 @@ export async function updateCustomer(
   let imageUrl = customer.imageUrl;
   if (customer.userImage.size > 0)
     imageUrl = await saveFile(customer.userImage);
-  console.log("UPDATING ===", name, firstName, lastName, id);
 
   try {
     // Insert data into database

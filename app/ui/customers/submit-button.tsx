@@ -3,13 +3,11 @@
 import { useFormStatus } from "react-dom";
 import CustomButton from "../custom-button";
 import { useEffect } from "react";
+import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 
-interface SubmitButtonProps {
-  handleLoading: (state: boolean, text: string) => void;
-}
-
-export function SubmitButton({ handleLoading }: SubmitButtonProps) {
+export function SubmitButton() {
   const { pending } = useFormStatus();
+  const { handleLoading } = useMessageAndLoading();
 
   useEffect(() => {
     if (!pending) handleLoading(false, "");
@@ -22,7 +20,7 @@ export function SubmitButton({ handleLoading }: SubmitButtonProps) {
         type="submit"
         onClick={() => handleLoading(true, "Saving...")}
       >
-        Submit
+        Save
       </CustomButton>
     </div>
   );

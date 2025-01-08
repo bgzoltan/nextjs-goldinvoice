@@ -1,17 +1,12 @@
+import { useMessageAndLoading } from "../dashboard/context/message-context";
 import { Message, MessageType } from "../lib/definitions";
 import CustomButton from "./custom-button";
 
-interface ShowMessageProp {
-  message: Message;
-  handleMessageClick: () => void;
-}
-
-export default function ShowMessage({
-  message,
-  handleMessageClick,
-}: ShowMessageProp) {
+export default function ShowMessage() {
   let bgColor = "";
   let title = "";
+
+  const { message, handleMessageClick } = useMessageAndLoading();
 
   if (message.type == MessageType.Error) {
     bgColor = "red";

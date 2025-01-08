@@ -15,11 +15,10 @@ import { SubmitButton } from "./submit-button";
 interface EditFormProps {
   customer: Customer;
   onSubmit(formData: FormData): Promise<void>;
-  handleLoading: (state: boolean, text: string) => void;
 }
 
 export function EditForm(props: EditFormProps) {
-  const { customer, onSubmit, handleLoading } = props;
+  const { customer, onSubmit } = props;
   const [fileName, setFileName] = useState<string>(customer.imageUrl);
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +121,7 @@ export function EditForm(props: EditFormProps) {
           <CustomLink linkType="secondary" href="/dashboard/customers">
             Cancel
           </CustomLink>
-          <SubmitButton handleLoading={handleLoading} />
+          <SubmitButton />
         </div>
       </form>
     </div>

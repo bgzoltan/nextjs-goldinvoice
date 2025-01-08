@@ -11,35 +11,14 @@ import ShowMessage from "../show-message";
 import { createCustomer } from "@/app/lib/actions";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";
-import { Message, MessageType } from "@/app/lib/definitions";
+import { MessageType } from "@/app/lib/definitions";
 import CustomLoading from "../custom-loading";
 import { SubmitButton } from "./submit-button";
+import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 
 export default function CreateCustomerForm() {
   const [fileName, setFileName] = useState<string>("");
-  const [isLoading, setIsLoading] = useState({ state: false, text: "" });
-  const [message, setMessage] = useState<Message>({
-    type: MessageType.Empty,
-    content: "",
-    show: false,
-    redirect: false,
-  });
-
-  const router = useRouter();
-  const handleLoading = (state: boolean, text: string) => {
-    setIsLoading({ ...isLoading, state, text });
-  };
-
-  const handleMessageClick = () => {
-    setMessage({
-      ...message,
-      show: false,
-    });
-    if (message.redirect) {
-      handleLoading(true, "Redirecting...");
-      router.push("/dashboard/customers");
-    }
-  };
+  const { message, isLoading, handleMessage } = useMessageAndLoading();
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -63,7 +42,7 @@ export default function CreateCustomerForm() {
     });
 
     if (!result) {
-      setMessage({
+      handleMessage({
         ...message,
         content: "Form is updated successfully.",
         type: MessageType.Information,
@@ -71,7 +50,7 @@ export default function CreateCustomerForm() {
         redirect: true,
       });
     } else if (result.error) {
-      setMessage({
+      handleMessage({
         ...message,
         content: result.error,
         type: MessageType.Error,
@@ -155,12 +134,9 @@ export default function CreateCustomerForm() {
           <CustomLink linkType="secondary" href="/dashboard/customers">
             Cancel
           </CustomLink>
-          <SubmitButton handleLoading={handleLoading} />
+          <SubmitButton />
         </div>
-        <ShowMessage
-          message={message}
-          handleMessageClick={handleMessageClick}
-        />
+        <ShowMessage />
       </form>
     </div>
   );

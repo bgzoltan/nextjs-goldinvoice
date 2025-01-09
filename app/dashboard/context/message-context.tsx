@@ -5,17 +5,25 @@ import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { createContext } from "react";
 
-const Context = createContext({
+interface ContextType {
+  message: Message;
+  handleMessage: (message: Message) => void;
+  handleMessageClick: () => void;
+  isLoading: { state: boolean; text: string };
+  handleLoading: (state: boolean, text: string) => void;
+}
+
+const Context = createContext<ContextType>({
   message: {
     type: MessageType.Empty,
     content: "",
     show: false,
     redirect: false,
   },
-  handleMessage: (message: Message) => {},
+  handleMessage: () => {},
   handleMessageClick: () => {},
   isLoading: { state: false, text: "" },
-  handleLoading: (state: boolean, text: string) => {},
+  handleLoading: () => {},
 });
 
 export const useMessageAndLoading = () => {

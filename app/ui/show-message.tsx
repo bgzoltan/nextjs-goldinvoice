@@ -1,5 +1,5 @@
 import { useMessageAndLoading } from "../dashboard/context/message-context";
-import { Message, MessageType } from "../lib/definitions";
+import { MessageType } from "../lib/definitions";
 import CustomButton from "./custom-button";
 
 export default function ShowMessage() {

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import ShowMessage from "../show-message";
 import { updateCustomer } from "@/app/lib/actions";
-import { Customer, Message, MessageType } from "@/app/lib/definitions";
+import { Customer, MessageType } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import CustomLoading from "../custom-loading";
 import { EditForm } from "./edit-form";
@@ -19,8 +19,7 @@ export default function EditCustomerForm({
   customer,
 }: EditCustomerFormProp) {
   const router = useRouter();
-  const { message, handleMessage, handleMessageClick, isLoading } =
-    useMessageAndLoading();
+  const { message, handleMessage, isLoading } = useMessageAndLoading();
 
   useEffect(() => {
     // prefetching the route to get faster redirect

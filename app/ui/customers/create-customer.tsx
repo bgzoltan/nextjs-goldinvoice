@@ -5,7 +5,6 @@ import {
   AtSymbolIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import ShowMessage from "../show-message";
 import { createCustomer } from "@/app/lib/actions";

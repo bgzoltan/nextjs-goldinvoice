@@ -18,6 +18,8 @@ export type Customer = {
   lastName: string;
 };
 
+export interface CreateCustomer extends Omit<Customer, "id"> {}
+
 export interface CreateModifyCustomer extends Omit<Customer, "id"> {
   userImage: File;
 }

@@ -6,18 +6,14 @@ import { updateCustomer } from "@/app/lib/actions";
 import { Customer, MessageType } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import CustomLoading from "../custom-loading";
-import { EditForm } from "./edit-form";
 import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
+import { CustomerForm } from "./customer-form";
 
-interface EditCustomerFormProp {
-  id: string;
+interface EditCustomerProps {
   customer: Customer;
 }
 
-export default function EditCustomerForm({
-  id,
-  customer,
-}: EditCustomerFormProp) {
+export default function EditCustomer({ customer }: EditCustomerProps) {
   const router = useRouter();
   const { message, handleMessage, isLoading } = useMessageAndLoading();
 
@@ -33,7 +29,7 @@ export default function EditCustomerForm({
     const email = formData.get("email") as string;
     const userImageFile = formData.get("user_image") as File;
 
-    const response = await updateCustomer(id, {
+    const response = await updateCustomer(customer.id, {
       name: name,
       firstName: firstName,
       lastName: lastName,
@@ -67,7 +63,7 @@ export default function EditCustomerForm({
           <CustomLoading>{isLoading.text}</CustomLoading>
         </div>
       )}
-      <EditForm customer={customer} onSubmit={onSubmit} />
+      <CustomerForm customer={customer} onSubmit={onSubmit} />
       <ShowMessage />
     </div>
   );

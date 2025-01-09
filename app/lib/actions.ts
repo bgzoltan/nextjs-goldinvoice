@@ -164,14 +164,16 @@ export async function createCustomer(customer: CreateModifyCustomer) {
     if (error instanceof Error) return { error: error.message };
   }
 
-  const image_url =
-    customer.userImage.size > 0 ? await saveFile(customer.userImage) : "";
+  let imageUrl = customer.imageUrl;
+  console.log("Image url", customer.userImage);
+  if (customer.userImage.size > 0)
+    imageUrl = await saveFile(customer.userImage);
 
   try {
     // Insert data into database
     await sql`
    INSERT INTO customers (first_name,last_name,name, email, image_url)
-   VALUES (${validatedCustomer.firstName},${validatedCustomer.lastName},${validatedCustomer.name}, ${validatedCustomer.email}, ${image_url})
+   VALUES (${validatedCustomer.firstName},${validatedCustomer.lastName},${validatedCustomer.name}, ${validatedCustomer.email}, ${imageUrl})
   `;
   } catch (error) {
     throw new Error(`There is a problem creating a customer: ${error}`);

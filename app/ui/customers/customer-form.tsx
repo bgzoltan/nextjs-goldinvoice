@@ -12,12 +12,12 @@ import CustomButton from "../custom-button";
 import CustomLink from "../custom-link";
 import { SubmitButton } from "./submit-button";
 
-interface EditFormProps {
+interface CustomerFormProps {
   customer: Customer;
   onSubmit(formData: FormData): Promise<void>;
 }
 
-export function EditForm(props: EditFormProps) {
+export function CustomerForm(props: CustomerFormProps) {
   const { customer, onSubmit } = props;
   const [fileName, setFileName] = useState<string>(customer.imageUrl);
 

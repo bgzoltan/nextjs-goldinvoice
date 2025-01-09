@@ -30,7 +30,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           },
         ]}
       />
-      <EditCustomerForm id={id} customer={customer} />
+      <EditCustomerForm customer={customer} />
     </div>
   );
 }

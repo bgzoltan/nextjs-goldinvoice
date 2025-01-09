@@ -9,13 +9,46 @@ export type User = {
   password: string;
 };
 
+export type State = {
+  name: string;
+  abbreviation: string;
+};
+
+export type Address = {
+  country: string;
+  state: State;
+  town: string;
+  street: string;
+  houseNo: string;
+  flatNo: string;
+};
+
+export type Phone = {
+  phone1: string;
+  phone2: string;
+};
+
+export type Email = {
+  email1: string;
+  email2: string;
+};
+
+export type Company = {
+  id: string;
+  name: string;
+  address: Address;
+  email: Email;
+  phone: Phone;
+  web: string;
+};
+
 export type Customer = {
   id: string;
   name: string;
-  email: string;
-  imageUrl: string;
   firstName: string;
   lastName: string;
+  email: string;
+  imageUrl: string;
 };
 
 export interface CreateModifyCustomer extends Omit<Customer, "id"> {

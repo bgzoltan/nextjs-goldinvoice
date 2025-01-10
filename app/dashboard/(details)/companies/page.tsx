@@ -1,12 +1,12 @@
 import Search from "@/app/ui/search";
 // import Table from "./table";
 import { fetchFilteredCompanies, fetchTotalCompanies } from "@/app/lib/data";
-// import Pagination from "@/app/ui/invoices/pagination";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import PageTitle from "@/app/ui/page-title";
 import { suse } from "@/app/ui/fonts";
 import { Company, CompanyDTO } from "@/app/lib/definitions";
 import Table from "@/app/ui/companies/table";
+import Pagination from "@/app/ui/pagination";
 
 export function mapCompaniesDtoToCompanies(
   companiesList: CompanyDTO[]
@@ -68,7 +68,7 @@ export default async function Page(props: {
 
         <Table companies={companies} />
         <div className="flex flex-row justify-center w-full">
-          {/* <Pagination totalPages={totalCustomers} /> */}
+          <Pagination totalPages={totalCompanies} />
         </div>
       </div>
     </>

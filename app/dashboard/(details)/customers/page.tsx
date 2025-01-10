@@ -1,7 +1,7 @@
 import Search from "@/app/ui/search";
 import Table from "./table";
 import { fetchFilteredCustomers, fetchTotalCustomers } from "@/app/lib/data";
-import Pagination from "@/app/ui/invoices/pagination";
+import Pagination from "@/app/ui/pagination";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import PageTitle from "@/app/ui/page-title";
 import { suse } from "@/app/ui/fonts";

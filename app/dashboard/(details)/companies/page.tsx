@@ -7,9 +7,7 @@ import { Company, CompanyDTO } from "@/app/lib/definitions";
 import Table from "@/app/ui/companies/table";
 import Pagination from "@/app/ui/pagination";
 
-export function mapCompaniesDtoToCompanies(
-  companiesList: CompanyDTO[]
-): Company[] {
+function mapCompaniesDtoToCompanies(companiesList: CompanyDTO[]): Company[] {
   return companiesList.map((company) => {
     return {
       id: company.id,

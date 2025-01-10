@@ -1,5 +1,7 @@
 "use client";
 
+import CustomButton from "./custom-button";
+
 interface ConfirmI {
   title: string;
   handleConfirm(value: boolean): void;
@@ -14,19 +16,19 @@ export default function ConfirmModal({ title, handleConfirm }: ConfirmI) {
             <p className="font-bold">{title}</p>
           </div>
           <p>Are you sure?</p>
-          <fieldset className="flex flex-row">
-            <button
+          <fieldset className="flex flex-row gap-2">
+            <CustomButton
               onClick={() => handleConfirm(true)}
-              className="rounded-md border p-2 m-2 hover:bg-gray-100"
+              buttonType="primary"
             >
-              <span>Yes</span>
-            </button>
-            <button
+              Yes
+            </CustomButton>
+            <CustomButton
               onClick={() => handleConfirm(false)}
-              className="rounded-md border p-2 m-2 hover:bg-gray-100"
+              buttonType="primary"
             >
-              <span>No</span>
-            </button>
+              No
+            </CustomButton>
           </fieldset>
         </div>
       </div>

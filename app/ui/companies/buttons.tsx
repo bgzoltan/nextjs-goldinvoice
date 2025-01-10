@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteCustomer } from "@/app/lib/actions";
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { deleteCompany } from "@/app/lib/actions";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Confirm from "../confirm-modal";
 import CustomLink from "../custom-link";
@@ -9,30 +9,16 @@ import CustomButton from "../custom-button";
 import CustomLoading from "../custom-loading";
 import { SelectedItem } from "@/app/lib/definitions";
 
-export function CreateCustomer() {
+export function UpdateCompany({ id }: { id: string }) {
   return (
-    <CustomLink linkType="primary" href="/dashboard/customers/create">
-      Create Customer
-      <span className="sr-only">Create</span>
-      <PlusIcon className="h-5" />
-    </CustomLink>
-  );
-}
-
-export function UpdateCustomer({ id }: { id: string }) {
-  return (
-    <CustomLink
-      linkType="secondary"
-      href={`/dashboard/customers/${id}/edit`}
-      description="Edit item"
-    >
+    <CustomLink linkType="secondary" href={`/dashboard/companies/${id}/edit`}>
       <span className="sr-only">Edit</span>
       <PencilIcon className="w-5" />
     </CustomLink>
   );
 }
 
-export function DeleteCustomer({
+export function DeleteCompany({
   selectedItem,
   handleSelectItem,
   id,
@@ -47,15 +33,15 @@ export function DeleteCustomer({
     setIsLoading({ ...isLoading, state, text });
   };
 
-  async function DeleteCustomer() {
+  async function DeleteCompany() {
     handleLoading(true, "Deleting...");
-    const deleteCustomerWithId = deleteCustomer.bind(null, selectedItem.id);
-    await deleteCustomerWithId();
+    const deleteCompanyWithId = deleteCompany.bind(null, selectedItem.id);
+    await deleteCompanyWithId();
     handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
     handleLoading(false, "");
   }
   function handleConfirm(value: boolean) {
-    if (value) DeleteCustomer();
+    if (value) DeleteCompany();
     handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
   }
   return (
@@ -67,7 +53,6 @@ export function DeleteCustomer({
       )}
       <CustomButton
         buttonType="secondary"
-        description="Delete item"
         onClick={() => {
           handleSelectItem({
             ...selectedItem,

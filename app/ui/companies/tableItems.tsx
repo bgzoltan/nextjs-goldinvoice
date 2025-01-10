@@ -1,7 +1,7 @@
 "use client";
 import { Company, SelectedItem } from "@/app/lib/definitions";
 import { useState } from "react";
-import { DeleteCompany, UpdateCompany } from "@/app/ui/customers/buttons";
+import { DeleteCompany, UpdateCompany } from "@/app/ui/companies/buttons";
 
 export function TableItems({ company }: { company: Company }) {
   const [selectedItem, setSelectedItem] = useState<SelectedItem>({

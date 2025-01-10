@@ -29,7 +29,7 @@ export default function CustomButton({
       >
         {children}
       </button>
-      {isShowDescription && (
+      {isShowDescription && description && (
         <div className="flex justify-center absolute w-16 top-[-12px] left-[-0] rounded-sm p-[2px] text-[10px] bg-slate-500 text-white">
           <p>{description}</p>
         </div>

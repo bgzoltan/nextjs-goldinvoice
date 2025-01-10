@@ -285,3 +285,13 @@ async function saveFile(file: File) {
 
   return result.url;
 }
+
+export async function deleteCompany(id: string) {
+  try {
+    await sql`DELETE FROM company WHERE id=${id}`;
+    revalidatePath("/dashboard/company");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Database Error: Failed to Delete Company!");
+  }
+}

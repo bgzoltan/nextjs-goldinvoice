@@ -42,6 +42,23 @@ export type Company = {
   web: string;
 };
 
+export type CompanyDTO = {
+  id: string;
+  name: string;
+  country: string;
+  state_name: string;
+  state_abreviation: string;
+  town: string;
+  street: string;
+  house_no: string;
+  flat_no: string;
+  email1: string;
+  email2: string;
+  phone1: string;
+  phone2: string;
+  web: string;
+};
+
 export type Customer = {
   id: string;
   name: string;

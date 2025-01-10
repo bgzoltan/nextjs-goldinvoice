@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import {
+  CompanyDTO,
   Customer,
   CustomersTableType,
   InvoiceForm,
@@ -244,5 +245,57 @@ export async function fetchCustomerById(id: string) {
     return customer;
   } catch (error) {
     console.log("Error", error);
+  }
+}
+
+export async function fetchTotalCompanies(query: string) {
+  try {
+    const data = await sql`
+      SELECT COUNT(*)
+      FROM companies
+      WHERE
+		  companies.name ILIKE ${`%${query}%`} OR
+      companies.town ILIKE ${`%${query}%`}
+    `;
+
+    const totalPages = Math.ceil(Number(data.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch all companies.");
+  }
+}
+
+export async function fetchFilteredCompanies(query: string, page: number) {
+  const offset = (page - 1) * ITEMS_PER_PAGE;
+  try {
+    const data = await sql<CompanyDTO>`
+		SELECT
+		  companies.id,
+		  companies.name,
+      companies.country,
+      companies.state_name,
+      companies.state_abreviation,
+      companies.town,
+      companies.street,
+      companies.house_no,
+      companies.flat_no,
+      companies.email1,
+      companies.email2,
+      companies.phone1,
+      companies.phone2,
+      companies.web
+		FROM companies
+		WHERE
+		  companies.name ILIKE ${`%${query}%`} OR
+        companies.town ILIKE ${`%${query}%`}
+		ORDER BY companies.name ASC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+	  `;
+    const companies = data.rows;
+    return companies;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch customer table.");
   }
 }

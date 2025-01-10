@@ -4,10 +4,10 @@ import { deleteCustomer } from "@/app/lib/actions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Confirm from "../confirm-modal";
-import { SelectUserI } from "@/app/dashboard/(details)/customers/tableItems";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";
 import CustomLoading from "../custom-loading";
+import { SelectedItem } from "@/app/lib/definitions";
 
 export function CreateCustomer() {
   return (
@@ -21,23 +21,26 @@ export function CreateCustomer() {
 
 export function UpdateCustomer({ id }: { id: string }) {
   return (
-    <CustomLink linkType="secondary" href={`/dashboard/customers/${id}/edit`}>
+    <CustomLink
+      linkType="secondary"
+      href={`/dashboard/customers/${id}/edit`}
+      description="Edit item"
+    >
       <span className="sr-only">Edit</span>
       <PencilIcon className="w-5" />
     </CustomLink>
   );
 }
 
-interface DeleteCustomerI {
-  selectUser: SelectUserI;
-  handleSelectUser: (selectUser: SelectUserI) => void;
-  id: string;
-}
 export function DeleteCustomer({
-  selectUser,
-  handleSelectUser,
+  selectedItem,
+  handleSelectItem,
   id,
-}: DeleteCustomerI) {
+}: {
+  selectedItem: SelectedItem;
+  handleSelectItem: (selectedItem: SelectedItem) => void;
+  id: string;
+}) {
   const [isLoading, setIsLoading] = useState({ state: false, text: "" });
 
   const handleLoading = (state: boolean, text: string) => {
@@ -46,14 +49,78 @@ export function DeleteCustomer({
 
   async function DeleteUser() {
     handleLoading(true, "Deleting...");
-    const deleteCustomerWithId = deleteCustomer.bind(null, selectUser.id);
+    const deleteCustomerWithId = deleteCustomer.bind(null, selectedItem.id);
     await deleteCustomerWithId();
-    handleSelectUser({ ...selectUser, isDelete: false, isSelect: false });
+    handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
     handleLoading(false, "");
   }
   function handleConfirm(value: boolean) {
     if (value) DeleteUser();
-    handleSelectUser({ ...selectUser, isDelete: false, isSelect: false });
+    handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
+  }
+  return (
+    <>
+      {isLoading.state && (
+        <div className="fixed z-0 top-0 left-0 w-full h-full flex justify-center items-center">
+          <CustomLoading>{isLoading.text}</CustomLoading>
+        </div>
+      )}
+      <CustomButton
+        buttonType="secondary"
+        description="Delete item"
+        onClick={() => {
+          handleSelectItem({
+            ...selectedItem,
+            id: id,
+            isDelete: true,
+            isSelect: true,
+          });
+        }}
+      >
+        <span className="sr-only">Delete</span>
+        <TrashIcon className="w-5" />
+      </CustomButton>
+      {selectedItem.isDelete && (
+        <Confirm title="Delete user" handleConfirm={handleConfirm} />
+      )}
+    </>
+  );
+}
+
+export function UpdateCompany({ id }: { id: string }) {
+  return (
+    <CustomLink linkType="secondary" href={`/dashboard/companies/${id}/edit`}>
+      <span className="sr-only">Edit</span>
+      <PencilIcon className="w-5" />
+    </CustomLink>
+  );
+}
+
+export function DeleteCompany({
+  selectedItem,
+  handleSelectItem,
+  id,
+}: {
+  selectedItem: SelectedItem;
+  handleSelectItem: (selectedItem: SelectedItem) => void;
+  id: string;
+}) {
+  const [isLoading, setIsLoading] = useState({ state: false, text: "" });
+
+  const handleLoading = (state: boolean, text: string) => {
+    setIsLoading({ ...isLoading, state, text });
+  };
+
+  async function DeleteUser() {
+    handleLoading(true, "Deleting...");
+    const deleteCustomerWithId = deleteCustomer.bind(null, selectedItem.id);
+    await deleteCustomerWithId();
+    handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
+    handleLoading(false, "");
+  }
+  function handleConfirm(value: boolean) {
+    if (value) DeleteUser();
+    handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
   }
   return (
     <>
@@ -65,8 +132,8 @@ export function DeleteCustomer({
       <CustomButton
         buttonType="secondary"
         onClick={() => {
-          handleSelectUser({
-            ...selectUser,
+          handleSelectItem({
+            ...selectedItem,
             id: id,
             isDelete: true,
             isSelect: true,
@@ -76,7 +143,7 @@ export function DeleteCustomer({
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
       </CustomButton>
-      {selectUser.isDelete && (
+      {selectedItem.isDelete && (
         <Confirm title="Delete user" handleConfirm={handleConfirm} />
       )}
     </>

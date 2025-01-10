@@ -155,3 +155,9 @@ export interface Message {
   show: boolean;
   redirect: boolean;
 }
+
+export interface SelectedItem {
+  id: string;
+  isDelete: boolean;
+  isSelect: boolean;
+}

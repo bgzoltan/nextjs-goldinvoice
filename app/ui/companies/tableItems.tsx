@@ -1,33 +1,28 @@
 "use client";
-import { Company } from "@/app/lib/definitions";
+import { Company, SelectedItem } from "@/app/lib/definitions";
 import { useState } from "react";
-import { DeleteCustomer, UpdateCustomer } from "@/app/ui/customers/buttons";
-
-export interface SelectUserI {
-  id: string;
-  isDelete: boolean;
-  isSelect: boolean;
-}
+import { DeleteCompany, UpdateCompany } from "@/app/ui/customers/buttons";
 
 export function TableItems({ company }: { company: Company }) {
-  const [selectUser, setSelectUser] = useState<SelectUserI>({
+  const [selectedItem, setSelectedItem] = useState<SelectedItem>({
     id: "",
     isDelete: false,
     isSelect: false,
   });
 
-  const handleSelectUser = (selectUser: SelectUserI) => {
-    setSelectUser({
-      ...selectUser,
-      id: selectUser.id,
-      isDelete: selectUser.isDelete,
-      isSelect: selectUser.isSelect,
+  const handleSelectItem = (selectedItem: SelectedItem) => {
+    setSelectedItem({
+      ...selectedItem,
+      id: selectedItem.id,
+      isDelete: selectedItem.isDelete,
+      isSelect: selectedItem.isSelect,
     });
   };
+
   return (
     <tr
       className={`${
-        selectUser.isSelect && selectUser.id == company.id
+        selectedItem.isSelect && selectedItem.id == company.id
           ? "bg-gray-300"
           : "bg-white"
       } border-gray-200 border-1 border-solid static`}
@@ -42,12 +37,12 @@ export function TableItems({ company }: { company: Company }) {
       <td className="p-2">{company.web}</td>
       <td className="p-2">{company.phone.phone1}</td>
       <td className="p-2">{company.email.email1}</td>
-      <td className="p-2">
+      <td className="p-2 w-20">
         <div className="flex justify-end gap-2">
-          <UpdateCustomer id={company.id} />
-          <DeleteCustomer
-            selectUser={selectUser}
-            handleSelectUser={handleSelectUser}
+          <UpdateCompany id={company.id} />
+          <DeleteCompany
+            selectedItem={selectedItem}
+            handleSelectItem={handleSelectItem}
             id={company.id}
           />
         </div>

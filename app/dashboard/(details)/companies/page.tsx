@@ -1,5 +1,4 @@
 import Search from "@/app/ui/search";
-// import Table from "./table";
 import { fetchFilteredCompanies, fetchTotalCompanies } from "@/app/lib/data";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import PageTitle from "@/app/ui/page-title";
@@ -63,7 +62,7 @@ export default async function Page(props: {
         />
         <div className="w-full flex justify-between">
           <Search placeholder="Enter a company name..." />
-          {/* <CreateCustomer /> */}
+          {/* <CreateCompany /> */}
         </div>
 
         <Table companies={companies} />

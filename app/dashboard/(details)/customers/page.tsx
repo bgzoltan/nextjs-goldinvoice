@@ -1,5 +1,5 @@
 import Search from "@/app/ui/search";
-import Table from "./table";
+import Table from "../../../ui/customers/table";
 import { fetchFilteredCustomers, fetchTotalCustomers } from "@/app/lib/data";
 import Pagination from "@/app/ui/pagination";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";

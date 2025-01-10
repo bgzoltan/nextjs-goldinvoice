@@ -1,38 +1,32 @@
 "use client";
-import { FormattedCustomersTable } from "@/app/lib/definitions";
+import { FormattedCustomersTable, SelectedItem } from "@/app/lib/definitions";
 import { useState } from "react";
 import { DeleteCustomer, UpdateCustomer } from "@/app/ui/customers/buttons";
 import Image from "next/image";
-
-export interface SelectUserI {
-  id: string;
-  isDelete: boolean;
-  isSelect: boolean;
-}
 
 interface TableItemsI {
   customer: FormattedCustomersTable;
 }
 
 export function TableItems({ customer }: TableItemsI) {
-  const [selectUser, setSelectUser] = useState<SelectUserI>({
+  const [selectedItem, setSelectedItem] = useState<SelectedItem>({
     id: "",
     isDelete: false,
     isSelect: false,
   });
 
-  const handleSelectUser = (selectUser: SelectUserI) => {
-    setSelectUser({
-      ...selectUser,
-      id: selectUser.id,
-      isDelete: selectUser.isDelete,
-      isSelect: selectUser.isSelect,
+  const handleSelectItem = (selectedItem: SelectedItem) => {
+    setSelectedItem({
+      ...selectedItem,
+      id: selectedItem.id,
+      isDelete: selectedItem.isDelete,
+      isSelect: selectedItem.isSelect,
     });
   };
   return (
     <tr
       className={`${
-        selectUser.isSelect && selectUser.id == customer.id
+        selectedItem.isSelect && selectedItem.id == customer.id
           ? "bg-gray-300"
           : "bg-white"
       } border-gray-200 border-1 border-solid static`}
@@ -53,12 +47,12 @@ export function TableItems({ customer }: TableItemsI) {
       <td className="p-2">{customer.total_invoices}</td>
       <td className="p-2">{customer.total_paid}</td>
       <td className="p-2">{customer.total_pending}</td>
-      <td className="p-2">
+      <td className="p-2 w-20">
         <div className="flex justify-end gap-2">
           <UpdateCustomer id={customer.id} />
           <DeleteCustomer
-            selectUser={selectUser}
-            handleSelectUser={handleSelectUser}
+            selectedItem={selectedItem}
+            handleSelectItem={handleSelectItem}
             id={customer.id}
           />
         </div>

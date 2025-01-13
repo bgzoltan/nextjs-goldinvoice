@@ -14,6 +14,7 @@ const config: Config = {
       colors: {
         goldOrange: "#f1c40f",
         goldOrangeLight: "#fcf3cf",
+        goldGreen: "#ccffcc",
         blue: {
           400: "#2589FE",
           500: "#0070F3",

@@ -10,7 +10,7 @@ import Image from "next/image";
 import { Customer } from "@/app/lib/definitions";
 import CustomButton from "../custom-button";
 import CustomLink from "../custom-link";
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "../submit-button";
 
 interface CustomerFormProps {
   customer: Customer;

@@ -299,3 +299,33 @@ export async function fetchFilteredCompanies(query: string, page: number) {
     throw new Error("Failed to fetch customer table.");
   }
 }
+
+export const fetchCompanyById = async (id: string) => {
+  try {
+    const data = await sql<CompanyDTO>`
+    SELECT
+     companies.id,
+		  companies.name,
+      companies.country,
+      companies.state_name,
+      companies.state_abreviation,
+      companies.town,
+      companies.street,
+      companies.house_no,
+      companies.flat_no,
+      companies.email1,
+      companies.email2,
+      companies.phone1,
+      companies.phone2,
+      companies.web
+    FROM
+        companies
+    WHERE
+        id=${id};
+    `;
+
+    return data.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import CustomButton from "../custom-button";
+import CustomButton from "./custom-button";
 import { useEffect } from "react";
 import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 

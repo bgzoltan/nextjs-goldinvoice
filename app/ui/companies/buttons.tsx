@@ -1,13 +1,23 @@
 "use client";
 
 import { deleteCompany } from "@/app/lib/actions";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Confirm from "../confirm-modal";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";
 import CustomLoading from "../custom-loading";
 import { SelectedItem } from "@/app/lib/definitions";
+
+export function CreateCompany() {
+  return (
+    <CustomLink linkType="primary" href="/dashboard/companies/create">
+      Create Company
+      <span className="sr-only">Create</span>
+      <PlusIcon className="h-5" />
+    </CustomLink>
+  );
+}
 
 export function UpdateCompany({ id }: { id: string }) {
   return (
@@ -36,7 +46,8 @@ export function DeleteCompany({
   async function DeleteCompany() {
     handleLoading(true, "Deleting...");
     const deleteCompanyWithId = deleteCompany.bind(null, selectedItem.id);
-    await deleteCompanyWithId();
+    const response = await deleteCompanyWithId();
+    console.log("RESPONSE", response);
     handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
     handleLoading(false, "");
   }

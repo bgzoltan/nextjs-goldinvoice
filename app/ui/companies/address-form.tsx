@@ -31,17 +31,32 @@ export default function AddressForm({ company }: { company: Company }) {
       </div>
       <div className="container grid grid-cols-4 text-right p-2 items-center">
         <div className="relative">
-          <label className="p-2" htmlFor="state">
+          <label className="p-2" htmlFor="stateName">
             State
           </label>
           <MapIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
         </div>
         <input
           className="rounded-lg text-sm col-span-3"
-          id="state"
+          id="stateName"
           type="text"
-          name="state"
+          name="stateName"
           defaultValue={company.address.state.name ?? ""}
+        />
+      </div>
+      <div className="container grid grid-cols-4 text-right p-2 items-center">
+        <div className="relative">
+          <label className="p-2" htmlFor="stateAbbreviation">
+            State
+          </label>
+          <MapIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+        </div>
+        <input
+          className="rounded-lg text-sm col-span-3"
+          id="stateAbbreviation"
+          type="text"
+          name="stateAbbreviation"
+          defaultValue={company.address.state.abbreviation ?? ""}
         />
       </div>
       <div className="container grid grid-cols-4 text-right p-2 items-center">
@@ -93,7 +108,7 @@ export default function AddressForm({ company }: { company: Company }) {
         </div>
         <div className="container grid grid-cols-2 text-right items-center">
           <div className="relative">
-            <label className="p-2" htmlFor="houseNo">
+            <label className="p-2" htmlFor="flatNo">
               Flat No.
             </label>
             {/* <BuildingOfficeIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
@@ -103,7 +118,7 @@ export default function AddressForm({ company }: { company: Company }) {
             id="flatNo"
             type="text"
             name="flatNo"
-            defaultValue={company.address.houseNo ?? ""}
+            defaultValue={company.address.flatNo ?? ""}
           />
         </div>
       </div>

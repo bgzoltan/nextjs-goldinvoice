@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { v2 as cloudinary } from "cloudinary";
-import { CreateModifyCustomer } from "./definitions";
+import { CompanyDTO, CreateModifyCustomer } from "./definitions";
 
 export type State = {
   errors?: {
@@ -288,10 +288,159 @@ async function saveFile(file: File) {
 
 export async function deleteCompany(id: string) {
   try {
-    await sql`DELETE FROM company WHERE id=${id}`;
+    await sql`DELETE FROM companies WHERE id=${id}`;
     revalidatePath("/dashboard/company");
   } catch (error) {
     console.log(error);
     throw new Error("Database Error: Failed to Delete Company!");
   }
+}
+
+// Create formschema for Zod validation library
+const CompanyFormSchema = z.object({
+  id: z.string(),
+  name: z.string().max(40, { message: "Name is too long!" }),
+  country: z.string().max(56, { message: "Country name is too long!" }),
+  state_name: z.string(),
+  state_abreviation: z.string(),
+  town: z.string().max(30, { message: "Town name is too long!" }),
+  street: z.string().max(50, { message: "Street name is too long!" }),
+  house_no: z.string().max(5, { message: "House no. is too long!" }),
+  flat_no: z.string().max(5, { message: "Flat no. is too long!" }),
+  email1: z.string().email("Invalid email 1"),
+  email2: z.string().email("Indvalid email 2"),
+  phone1: z.string(),
+  phone2: z.string(),
+  web: z.string().url("The website is invalid"),
+});
+
+export async function createCompany(company: CompanyDTO) {
+  try {
+    if (!company.name) throw new Error(`Company name is missing!`);
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  // Validate with Zod parse method
+  const parsedValue = CompanyFormSchema.safeParse({
+    id: company.id,
+    name: company.name,
+    country: company.country,
+    state_name: company.state_name,
+    state_abreviation: company.state_abreviation,
+    town: company.town,
+    street: company.street,
+    house_no: company.house_no,
+    flat_no: company.flat_no,
+    email1: company.email1,
+    email2: company.email2,
+    phone1: company.phone1,
+    phone2: company.phone2,
+    web: company.web,
+  });
+  if (!parsedValue.success) {
+    const errors = parsedValue.error.errors
+      .map((error) => error.message)
+      .join(" - ");
+    return {
+      error: errors,
+      message: "Failed to Create a company.",
+    };
+  }
+
+  const validatedCompany = parsedValue.data;
+
+  // company name database validation
+  try {
+    const response =
+      await sql`SELECT * FROM companies WHERE (name ILIKE ${validatedCompany.name}) `;
+    if (response.rows.length !== 0)
+      throw new Error(
+        `The ${validatedCompany.name} company is already in the database!`
+      );
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  try {
+    // Insert data into database
+    await sql`
+   INSERT INTO companies (name,country,state_name,state_abreviation,town,street,house_no,flat_no,phone1,phone2,email1,email2,web)
+   VALUES (
+   ${validatedCompany.name},
+   ${validatedCompany.country},
+   ${validatedCompany.state_name},
+   ${validatedCompany.state_abreviation},
+   ${validatedCompany.town},
+   ${validatedCompany.street},
+   ${validatedCompany.house_no},
+   ${validatedCompany.flat_no},
+   ${validatedCompany.phone1},
+   ${validatedCompany.phone2},
+   ${validatedCompany.email1},
+   ${validatedCompany.email2},
+   ${validatedCompany.web})
+  `;
+  } catch (error) {
+    console.log(`There is a problem creating a company: ${error}`);
+    return new Error(`There is a problem creating a company: ${error}`);
+  }
+  // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
+  revalidatePath("/dashboard/companies");
+  return;
+}
+
+export async function updateCompany(id: string, company: CompanyDTO) {
+  try {
+    if (!company.name) throw new Error(`Please fill in the company name!`);
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  // Validate with Zod parse method
+  const parsedCompany = CompanyFormSchema.parse({
+    name: company.name,
+    country: company.country,
+    state_name: company.state_name,
+    state_abreviation: company.state_abreviation,
+    town: company.town,
+    street: company.street,
+    house_no: company.house_no,
+    flat_no: company.flat_no,
+    email1: company.email1,
+    email2: company.email2,
+    phone1: company.phone1,
+    phone2: company.phone2,
+    web: company.web,
+  });
+
+  // company name database validation
+  try {
+    const response =
+      await sql`SELECT * FROM companies WHERE (name NOT ILIKE ${parsedCompany.name} `;
+    if (response.rows.length !== 0)
+      throw new Error(
+        `The ${parsedCompany.name} company is already in the database!`
+      );
+  } catch (error) {
+    // Return an error to the client side
+    if (error instanceof Error) return { error: error.message };
+  }
+
+  try {
+    // Insert data into database
+    await sql`
+      UPDATE companies
+      SET name=${parsedCompany.name}, country=${parsedCompany.country}, state_name=${parsedCompany.state_name}, state_abbreviation=${parsedCompany.state_abreviation}, town=${company.town}, street=${company.street}, house_no=${company.house_no}, flat_no=${company.flat_no}, email1=${company.email1}, email2=${company.email2}, phone1=${company.phone1}, phone2=${company.phone2}, web=${company.web}
+      WHERE id=${id}
+    `;
+  } catch (error) {
+    return new Error(`There is a problem updating a company: ${error}`);
+  }
+  // Once the database has been updated, the /dashboard/companies path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
+  revalidatePath("/dashboard/company");
+  return;
 }

@@ -6,8 +6,11 @@ import { suse } from "@/app/ui/fonts";
 import { Company, CompanyDTO } from "@/app/lib/definitions";
 import Table from "@/app/ui/companies/table";
 import Pagination from "@/app/ui/pagination";
+import { CreateCompany } from "@/app/ui/companies/buttons";
 
-function mapCompaniesDtoToCompanies(companiesList: CompanyDTO[]): Company[] {
+export function mapCompaniesDtoToCompanies(
+  companiesList: CompanyDTO[]
+): Company[] {
   return companiesList.map((company) => {
     return {
       id: company.id,
@@ -60,7 +63,7 @@ export default async function Page(props: {
         />
         <div className="w-full flex justify-between">
           <Search placeholder="Enter a company name..." />
-          {/* <CreateCompany /> */}
+          <CreateCompany />
         </div>
 
         <Table companies={companies} />

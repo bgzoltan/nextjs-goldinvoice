@@ -1,8 +1,6 @@
-import { Inter, SUSE } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 
-export const inter = Inter({ subsets: ["latin"] });
-
-export const suse = SUSE({
-  weight: ["400", "700"],
+export const suse = Ubuntu({
+  weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
 });

@@ -22,57 +22,75 @@ export default function AddressForm({ company }: { company: Company }) {
           <GlobeAltIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
         </div>
         <input
-          className="rounded-lg text-sm col-span-3"
+          autoFocus
+          className="rounded-lg text-sm col-span-3 focus-outline-none focus:border-none focus:bg-goldOrangeLight"
           id="country"
           type="text"
           name="country"
           defaultValue={company.address.country ?? ""}
         />
       </div>
-      <div className="container grid grid-cols-4 text-right p-2 items-center">
-        <div className="relative">
-          <label className="p-2" htmlFor="stateName">
-            State
-          </label>
-          <MapIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+      <div className="container grid grid-cols-8 text-right p-2 items-center">
+        <div className="container grid grid-cols-6 col-span-6">
+          <div className="flex flex-row justify-end col-span-2 relative">
+            <label className="p-2" htmlFor="stateName">
+              State
+            </label>
+            <MapIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+          <input
+            className="rounded-lg text-sm flex flex-row justify-end col-span-4"
+            id="stateName"
+            type="text"
+            name="stateName"
+            defaultValue={company.address.state.name ?? ""}
+          />
         </div>
-        <input
-          className="rounded-lg text-sm col-span-3"
-          id="stateName"
-          type="text"
-          name="stateName"
-          defaultValue={company.address.state.name ?? ""}
-        />
+        <div className="grid grid-cols-2 col-span-2">
+          <div className="flex items-center relative col-span-1 justify-end">
+            <label className="p-2" htmlFor="stateAbbreviation">
+              Abr.
+            </label>
+          </div>
+          <input
+            className="rounded-lg text-sm col-span-1"
+            id="stateAbbreviation"
+            type="text"
+            name="stateAbbreviation"
+            defaultValue={company.address.state.abbreviation ?? ""}
+          />
+        </div>
       </div>
-      <div className="container grid grid-cols-4 text-right p-2 items-center">
-        <div className="relative">
-          <label className="p-2" htmlFor="stateAbbreviation">
-            State
-          </label>
-          <MapIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+      <div className="container grid grid-cols-8 text-right p-2 items-center">
+        <div className="container grid grid-cols-6 col-span-6">
+          <div className="flex flex-row justify-end col-span-2 relative">
+            <label className="p-2" htmlFor="town">
+              Town
+            </label>
+            <BuildingOffice2Icon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+          <input
+            className="rounded-lg text-sm flex flex-row justify-end col-span-4"
+            id="town"
+            type="text"
+            name="town"
+            defaultValue={company.address.town ?? ""}
+          />
         </div>
-        <input
-          className="rounded-lg text-sm col-span-3"
-          id="stateAbbreviation"
-          type="text"
-          name="stateAbbreviation"
-          defaultValue={company.address.state.abbreviation ?? ""}
-        />
-      </div>
-      <div className="container grid grid-cols-4 text-right p-2 items-center">
-        <div className="relative">
-          <label className="p-2" htmlFor="town">
-            Town
-          </label>
-          <BuildingOffice2Icon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+        <div className="grid grid-cols-2 col-span-2">
+          <div className="flex items-center relative col-span-1 justify-end">
+            <label className="p-2" htmlFor="postCode">
+              Postcode
+            </label>
+          </div>
+          <input
+            className="rounded-lg text-sm col-span-1"
+            id="postCode"
+            type="text"
+            name="postCode"
+            defaultValue={company.address.postCode ?? ""}
+          />
         </div>
-        <input
-          className="rounded-lg text-sm col-span-3"
-          id="town"
-          type="text"
-          name="town"
-          defaultValue={company.address.town ?? ""}
-        />
       </div>
 
       <div className="container grid grid-cols-4 text-right p-2 items-center">
@@ -94,7 +112,7 @@ export default function AddressForm({ company }: { company: Company }) {
         <div className="container grid grid-cols-2 text-right items-center">
           <div className="relative">
             <label className="p-2" htmlFor="houseNo">
-              HouseNo
+              House No.
             </label>
             {/* <BuildingOfficeIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
           </div>
@@ -109,7 +127,7 @@ export default function AddressForm({ company }: { company: Company }) {
         <div className="container grid grid-cols-2 text-right items-center">
           <div className="relative">
             <label className="p-2" htmlFor="flatNo">
-              Flat No.
+              Floor/Unit No.
             </label>
             {/* <BuildingOfficeIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
           </div>

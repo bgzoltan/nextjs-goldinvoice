@@ -20,6 +20,7 @@ export default function CreateCustomerForm() {
         name: "",
         abbreviation: "",
       },
+      postCode: "",
       town: "",
       street: "",
       houseNo: "",
@@ -31,32 +32,13 @@ export default function CreateCustomerForm() {
   });
 
   async function onSubmit(formData: FormData) {
-    console.log(
-      "FORMDATA ++++++++++++++++++++++++",
-      "Name:",
-      formData.get("name") as string,
-      "Country",
-      formData.get("country") as string,
-      "State:",
-      formData.get("stateName") as string,
-      formData.get("stateAbbreviation") as string,
-      formData.get("town") as string,
-      formData.get("street") as string,
-      formData.get("houseNo") as string,
-      formData.get("flatNo") as string,
-      formData.get("email1") as string,
-      formData.get("email2") as string,
-      formData.get("phone1") as string,
-      formData.get("phone2") as string,
-      formData.get("web") as string
-    );
-
     const newCompany = {
       id: "",
       name: formData.get("name") as string,
       country: formData.get("country") as string,
       state_name: formData.get("stateName") as string,
       state_abreviation: formData.get("stateAbbreviation") as string,
+      post_code: formData.get("postCode") as string,
       town: formData.get("town") as string,
       street: formData.get("town") as string,
       house_no: formData.get("houseNo") as string,
@@ -67,11 +49,11 @@ export default function CreateCustomerForm() {
       phone2: formData.get("phone2") as string,
       web: formData.get("web") as string,
     };
-
-    const result = await createCompany(newCompany);
     setCompany(mapCompaniesDtoToCompanies([newCompany])[0]);
 
-    if (!result) {
+    const response = await createCompany(newCompany);
+
+    if (!response.error) {
       handleMessage({
         ...message,
         content: "Form is updated successfully.",
@@ -79,10 +61,10 @@ export default function CreateCustomerForm() {
         show: true,
         redirect: true,
       });
-    } else if (result.error) {
+    } else if (response.error) {
       handleMessage({
         ...message,
-        content: result.error,
+        content: response.error,
         type: MessageType.Error,
         show: true,
       });

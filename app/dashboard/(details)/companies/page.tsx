@@ -21,6 +21,7 @@ export function mapCompaniesDtoToCompanies(
           name: company.state_name,
           abbreviation: company.state_abreviation,
         },
+        postCode: company.post_code,
         town: company.town,
         street: company.street,
         houseNo: company.house_no,

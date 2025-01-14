@@ -1,5 +1,8 @@
+"use client";
+
 import { Company } from "@/app/lib/definitions";
 import { TableItems } from "./tableItems";
+import ShowMessage from "../show-message";
 
 export default function CompaniesTable({
   companies,
@@ -9,8 +12,8 @@ export default function CompaniesTable({
   return (
     <>
       <div className="w-full relative text-sm mt-2 mb-2 rounded-lg bg-gray-200">
-        <div className="p-2">
-          <table className="w-full text-gray-900 ">
+        <div className="p-2 overflow-auto">
+          <table className="w-full text-gray-900 table-auto">
             <thead className="text-left font-normal">
               <tr>
                 <th scope="col" className="px-2 py-4 ">
@@ -55,6 +58,7 @@ export default function CompaniesTable({
             </tbody>
           </table>
         </div>
+        <ShowMessage />
       </div>
     </>
   );

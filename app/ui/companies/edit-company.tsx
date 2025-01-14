@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import CustomLoading from "../custom-loading";
 import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 import { CompanyForm } from "./company-form";
+import { updateCompany } from "@/app/lib/actions";
 
 interface EditCompanyProps {
   company: Company;
@@ -22,13 +23,15 @@ export default function EditCompany({ company }: EditCompanyProps) {
   }, []);
 
   async function onSubmit(formData: FormData) {
-    const response = await updateCompany<CompanyDTO>(company.id, {
+    const response = await updateCompany(company.id, {
+      id: company.id as string,
       name: formData.get("name") as string,
       country: formData.get("country") as string,
       state_name: formData.get("stateName") as string,
       state_abreviation: formData.get("stateAbbreviation") as string,
+      post_code: formData.get("postCode") as string,
       town: formData.get("town") as string,
-      street: formData.get("town") as string,
+      street: formData.get("street") as string,
       house_no: formData.get("houseNo") as string,
       flat_no: formData.get("flatNo") as string,
       email1: formData.get("email1") as string,
@@ -38,7 +41,7 @@ export default function EditCompany({ company }: EditCompanyProps) {
       web: formData.get("web") as string,
     });
 
-    if (!response) {
+    if (!response.error) {
       handleMessage({
         ...message,
         content: "Form is updated successfully.",

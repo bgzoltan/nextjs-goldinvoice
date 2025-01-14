@@ -16,6 +16,7 @@ function mapCompanyDtoToCompany(company: CompanyDTO): Company {
         abbreviation: company.state_abreviation,
       },
       town: company.town,
+      postCode: company.post_code,
       street: company.street,
       houseNo: company.house_no,
       flatNo: company.flat_no,

@@ -7,7 +7,8 @@ import Confirm from "../confirm-modal";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";
 import CustomLoading from "../custom-loading";
-import { SelectedItem } from "@/app/lib/definitions";
+import { MessageType, SelectedItem } from "@/app/lib/definitions";
+import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 
 export function CreateCompany() {
   return (
@@ -37,17 +38,31 @@ export function DeleteCompany({
   handleSelectItem: (selectedItem: SelectedItem) => void;
   id: string;
 }) {
-  const [isLoading, setIsLoading] = useState({ state: false, text: "" });
-
-  const handleLoading = (state: boolean, text: string) => {
-    setIsLoading({ ...isLoading, state, text });
-  };
+  const { message, handleMessage, isLoading, handleLoading } =
+    useMessageAndLoading();
 
   async function DeleteCompany() {
     handleLoading(true, "Deleting...");
     const deleteCompanyWithId = deleteCompany.bind(null, selectedItem.id);
     const response = await deleteCompanyWithId();
-    console.log("RESPONSE", response);
+
+    if (!response.error) {
+      handleMessage({
+        ...message,
+        content: "Form is updated successfully.",
+        type: MessageType.Information,
+        show: true,
+        redirect: true,
+      });
+    } else if (response.error) {
+      handleMessage({
+        ...message,
+        content: response.error,
+        type: MessageType.Error,
+        show: true,
+      });
+    }
+
     handleSelectItem({ ...selectedItem, isDelete: false, isSelect: false });
     handleLoading(false, "");
   }

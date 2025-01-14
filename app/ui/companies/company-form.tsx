@@ -27,7 +27,8 @@ export function CompanyForm(props: CompanyFormProps) {
             <BuildingOfficeIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <input
-            className="rounded-lg text-sm w-80"
+            className="rounded-lg text-sm w-80 bg-slate-200"
+            readOnly
             id="name"
             type="text"
             name="name"
@@ -36,8 +37,8 @@ export function CompanyForm(props: CompanyFormProps) {
           <div></div>
         </div>
         <div className="container m-auto grid grid-rows-1 grid-cols-2 gap-2 w-full p-2">
-          <ContactForm company={company} />
           <AddressForm company={company} />
+          <ContactForm company={company} />
         </div>
         <div className="flex justify-end gap-2">
           <CustomLink linkType="secondary" href="/dashboard/companies">

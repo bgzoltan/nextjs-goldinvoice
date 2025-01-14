@@ -17,6 +17,7 @@ export type State = {
 export type Address = {
   country: string;
   state: State;
+  postCode: string;
   town: string;
   street: string;
   houseNo: string;
@@ -48,6 +49,7 @@ export type CompanyDTO = {
   country: string;
   state_name: string;
   state_abreviation: string;
+  post_code: string;
   town: string;
   street: string;
   house_no: string;

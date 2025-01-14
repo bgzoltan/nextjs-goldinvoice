@@ -1,5 +1,5 @@
 import "@/app/ui/global.css";
-import { inter } from "@/app/ui/fonts";
+import { suse } from "@/app/ui/fonts";
 import { Metadata } from "next";
 import MessageContainer from "./dashboard/context/message-context";
 
@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${suse.className} antialiased`}>
         <MessageContainer>{children}</MessageContainer>
       </body>
     </html>

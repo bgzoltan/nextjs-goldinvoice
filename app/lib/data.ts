@@ -310,6 +310,7 @@ export const fetchCompanyById = async (id: string) => {
       companies.state_name,
       companies.state_abreviation,
       companies.town,
+      companies.post_code,
       companies.street,
       companies.house_no,
       companies.flat_no,

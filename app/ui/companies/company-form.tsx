@@ -28,7 +28,7 @@ export function CompanyForm(props: CompanyFormProps) {
           </div>
           <input
             className="rounded-lg text-sm w-80 bg-slate-200"
-            readOnly
+            readOnly={company.id != ""}
             id="name"
             type="text"
             name="name"

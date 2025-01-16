@@ -3,7 +3,6 @@ import { fetchFilteredCompanies, fetchTotalCompanies } from "@/app/lib/data";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import PageTitle from "@/app/ui/page-title";
 import { suse } from "@/app/ui/fonts";
-import { Company, CompanyDTO } from "@/app/lib/definitions";
 import Table from "@/app/ui/companies/table";
 import Pagination from "@/app/ui/pagination";
 import { CreateCompany } from "@/app/ui/companies/buttons";

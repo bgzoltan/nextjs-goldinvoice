@@ -373,7 +373,7 @@ export async function createCompany(company: CompanyDTO) {
   try {
     // Insert data into database
     await sql`
-   INSERT INTO companies (name,country_name,country_code,state_name,state_abreviation,post_code,town,street,house_no,flat_no,phone1,phone2,email1,email2,web)
+   INSERT INTO companies (name,country_name,country_code,state_name,state_code,post_code,town,street,house_no,flat_no,phone1,phone2,email1,email2,web)
    VALUES (
    ${validatedCompany.name},
    ${validatedCompany.country_name},

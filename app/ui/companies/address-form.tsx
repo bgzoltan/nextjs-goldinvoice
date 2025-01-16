@@ -57,7 +57,7 @@ export default function AddressForm({ company }: { company: Company }) {
             defaultValue={company.address.country.name ?? ""}
           >
             {countries.map((country) => (
-              <option selected key={country.code} value={country.name}>
+              <option key={country.code} value={country.name}>
                 {country.name ?? ""}
               </option>
             ))}
@@ -97,7 +97,7 @@ export default function AddressForm({ company }: { company: Company }) {
             {states
               .filter((state) => state.countryCode == countryCode)
               .map((state) => (
-                <option selected key={state.code} value={state.name}>
+                <option key={state.code} value={state.name}>
                   {state.name}
                 </option>
               ))}

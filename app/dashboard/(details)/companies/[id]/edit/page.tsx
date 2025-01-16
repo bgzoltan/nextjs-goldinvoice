@@ -10,10 +10,10 @@ function mapCompanyDtoToCompany(company: CompanyDTO): Company {
     id: company.id,
     name: company.name,
     address: {
-      country: company.country,
+      country: { name: company.country_name, code: company.country_code },
       state: {
         name: company.state_name,
-        abbreviation: company.state_abreviation,
+        code: company.state_code,
       },
       town: company.town,
       postCode: company.post_code,

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import ShowMessage from "../show-message";
-import { Company, CompanyDTO, MessageType } from "@/app/lib/definitions";
+import { Company, MessageType } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import CustomLoading from "../custom-loading";
 import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
@@ -26,9 +26,10 @@ export default function EditCompany({ company }: EditCompanyProps) {
     const response = await updateCompany(company.id, {
       id: company.id as string,
       name: formData.get("name") as string,
-      country: formData.get("country") as string,
+      country_name: formData.get("countryName") as string,
+      country_code: formData.get("countryCode") as string,
       state_name: formData.get("stateName") as string,
-      state_abreviation: formData.get("stateAbbreviation") as string,
+      state_code: formData.get("stateCode") as string,
       post_code: formData.get("postCode") as string,
       town: formData.get("town") as string,
       street: formData.get("street") as string,

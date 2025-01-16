@@ -304,9 +304,10 @@ export async function deleteCompany(id: string) {
 const CompanyFormSchema = z.object({
   id: z.string(),
   name: z.string().max(40, { message: "Name is too long!" }),
-  country: z.string().max(56, { message: "Country name is too long!" }),
+  country_name: z.string().max(56, { message: "Country name is too long!" }),
+  country_code: z.string().max(56, { message: "Country name is too long!" }),
   state_name: z.string(),
-  state_abreviation: z.string(),
+  state_code: z.string(),
   post_code: z.string(),
   town: z.string().max(30, { message: "Town name is too long!" }),
   street: z.string().max(50, { message: "Street name is too long!" }),
@@ -331,9 +332,10 @@ export async function createCompany(company: CompanyDTO) {
   const parsedValue = CompanyFormSchema.safeParse({
     id: company.id,
     name: company.name,
-    country: company.country,
+    country_name: company.country_name,
+    country_code: company.country_code,
     state_name: company.state_name,
-    state_abreviation: company.state_abreviation,
+    state_code: company.state_code,
     post_code: company.post_code,
     town: company.town,
     street: company.street,
@@ -371,12 +373,13 @@ export async function createCompany(company: CompanyDTO) {
   try {
     // Insert data into database
     await sql`
-   INSERT INTO companies (name,country,state_name,state_abreviation,post_code,town,street,house_no,flat_no,phone1,phone2,email1,email2,web)
+   INSERT INTO companies (name,country_name,country_code,state_name,state_abreviation,post_code,town,street,house_no,flat_no,phone1,phone2,email1,email2,web)
    VALUES (
    ${validatedCompany.name},
-   ${validatedCompany.country},
+   ${validatedCompany.country_name},
+   ${validatedCompany.country_code},
    ${validatedCompany.state_name},
-   ${validatedCompany.state_abreviation},
+   ${validatedCompany.state_code},
    ${validatedCompany.post_code},
    ${validatedCompany.town},
    ${validatedCompany.street},
@@ -407,9 +410,10 @@ export async function updateCompany(id: string, company: CompanyDTO) {
   const parsedValue = CompanyFormSchema.safeParse({
     id: id,
     name: company.name,
-    country: company.country,
+    country_name: company.country_name,
+    country_code: company.country_code,
     state_name: company.state_name,
-    state_abreviation: company.state_abreviation,
+    state_code: company.state_code,
     post_code: company.post_code,
     town: company.town,
     street: company.street,
@@ -421,6 +425,8 @@ export async function updateCompany(id: string, company: CompanyDTO) {
     phone2: company.phone2,
     web: company.web,
   });
+
+  console.log("COMPANY -------------", company);
 
   if (!parsedValue.success) {
     const message = parsedValue.error.errors
@@ -437,7 +443,7 @@ export async function updateCompany(id: string, company: CompanyDTO) {
     // Insert data into database
     await sql`
       UPDATE companies
-      SET name=${validatedCompany.name}, country=${validatedCompany.country}, state_name=${validatedCompany.state_name}, state_abreviation=${validatedCompany.state_abreviation}, post_code=${validatedCompany.post_code}, town=${validatedCompany.town}, street=${validatedCompany.street}, house_no=${validatedCompany.house_no}, flat_no=${validatedCompany.flat_no}, email1=${validatedCompany.email1}, email2=${validatedCompany.email2}, phone1=${validatedCompany.phone1}, phone2=${validatedCompany.phone2}, web=${validatedCompany.web}
+      SET name=${validatedCompany.name}, country_name=${validatedCompany.country_name}, country_code=${validatedCompany.country_code}, state_name=${validatedCompany.state_name}, state_code=${validatedCompany.state_code}, post_code=${validatedCompany.post_code}, town=${validatedCompany.town}, street=${validatedCompany.street}, house_no=${validatedCompany.house_no}, flat_no=${validatedCompany.flat_no}, email1=${validatedCompany.email1}, email2=${validatedCompany.email2}, phone1=${validatedCompany.phone1}, phone2=${validatedCompany.phone2}, web=${validatedCompany.web}
       WHERE id=${id}
     `;
   } catch (error) {

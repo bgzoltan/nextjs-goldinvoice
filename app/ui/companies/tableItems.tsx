@@ -28,7 +28,7 @@ export function TableItems({ company }: { company: Company }) {
       } border-gray-200 border-1 border-solid static`}
     >
       <td className="p-2">{company.name}</td>
-      <td className="p-2">{company.address.country}</td>
+      <td className="p-2">{company.address.country.name}</td>
       <td className="p-2">{company.address.state.name}</td>
       <td className="p-2">{company.address.town}</td>
       <td className="p-2">{company.address.street}</td>

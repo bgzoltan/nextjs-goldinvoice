@@ -11,11 +11,16 @@ export type User = {
 
 export type State = {
   name: string;
-  abbreviation: string;
+  code: string;
+};
+
+export type Country = {
+  name: string;
+  code: string;
 };
 
 export type Address = {
-  country: string;
+  country: Country;
   state: State;
   postCode: string;
   town: string;
@@ -46,9 +51,10 @@ export type Company = {
 export type CompanyDTO = {
   id: string;
   name: string;
-  country: string;
+  country_name: string;
+  country_code: string;
   state_name: string;
-  state_abreviation: string;
+  state_code: string;
   post_code: string;
   town: string;
   street: string;

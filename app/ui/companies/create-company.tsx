@@ -15,10 +15,10 @@ export default function CreateCustomerForm() {
     id: "",
     name: "",
     address: {
-      country: "",
+      country: { name: "", code: "" },
       state: {
         name: "",
-        abbreviation: "",
+        code: "",
       },
       postCode: "",
       town: "",
@@ -35,9 +35,10 @@ export default function CreateCustomerForm() {
     const newCompany = {
       id: "",
       name: formData.get("name") as string,
-      country: formData.get("country") as string,
+      country_name: formData.get("countryName") as string,
+      country_code: formData.get("countryCode") as string,
       state_name: formData.get("stateName") as string,
-      state_abreviation: formData.get("stateAbbreviation") as string,
+      state_code: formData.get("stateCode") as string,
       post_code: formData.get("postCode") as string,
       town: formData.get("town") as string,
       street: formData.get("town") as string,

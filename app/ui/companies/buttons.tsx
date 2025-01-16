@@ -2,7 +2,6 @@
 
 import { deleteCompany } from "@/app/lib/actions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
 import Confirm from "../confirm-modal";
 import CustomLink from "../custom-link";
 import CustomButton from "../custom-button";

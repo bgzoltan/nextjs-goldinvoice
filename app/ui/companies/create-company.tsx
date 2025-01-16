@@ -7,7 +7,7 @@ import CustomLoading from "../custom-loading";
 import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
 import { CompanyForm } from "./company-form";
 import { useState } from "react";
-import { mapCompaniesDtoToCompanies } from "@/app/dashboard/(details)/companies/page";
+import { mapCompaniesDtoToCompanies } from "@/app/lib/utils";
 
 export default function CreateCustomerForm() {
   const { message, isLoading, handleMessage } = useMessageAndLoading();

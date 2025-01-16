@@ -7,32 +7,7 @@ import { Company, CompanyDTO } from "@/app/lib/definitions";
 import Table from "@/app/ui/companies/table";
 import Pagination from "@/app/ui/pagination";
 import { CreateCompany } from "@/app/ui/companies/buttons";
-
-export function mapCompaniesDtoToCompanies(
-  companiesList: CompanyDTO[]
-): Company[] {
-  return companiesList.map((company) => {
-    return {
-      id: company.id,
-      name: company.name,
-      address: {
-        country: { name: company.country_code, code: company.country_code },
-        state: {
-          name: company.state_name,
-          code: company.state_code,
-        },
-        postCode: company.post_code,
-        town: company.town,
-        street: company.street,
-        houseNo: company.house_no,
-        flatNo: company.flat_no,
-      },
-      email: { email1: company.email1, email2: company.email2 },
-      phone: { phone1: company.phone1, phone2: company.phone2 },
-      web: company.web,
-    };
-  });
-}
+import { mapCompaniesDtoToCompanies } from "@/app/lib/utils";
 
 export default async function Page(props: {
   searchParams?: Promise<{

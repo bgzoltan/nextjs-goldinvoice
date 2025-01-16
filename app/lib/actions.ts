@@ -426,8 +426,6 @@ export async function updateCompany(id: string, company: CompanyDTO) {
     web: company.web,
   });
 
-  console.log("COMPANY -------------", company);
-
   if (!parsedValue.success) {
     const message = parsedValue.error.errors
       .map((error) => error.message)

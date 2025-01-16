@@ -45,6 +45,7 @@ export default function EditCustomer({ customer }: EditCustomerProps) {
         type: MessageType.Information,
         show: true,
         redirect: true,
+        redirect_url: "/dashboard/customers",
       });
     } else if (response.error) {
       handleMessage({

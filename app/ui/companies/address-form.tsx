@@ -41,25 +41,28 @@ export default function AddressForm({ company }: { company: Company }) {
     <div
       className={`flex rounded-lg flex-col w-full gap-2 ${suse.className} bg-goldGreen`}
     >
-      <div className="container grid grid-cols-4 text-right p-2 items-center">
-        <div className="relative">
-          <label className="p-2" htmlFor="country">
-            Country
-          </label>
-          <GlobeAltIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+      <div className="container grid grid-cols-8 text-right p-2 items-center">
+        <div className="container grid grid-cols-6 col-span-6">
+          <div className="flex flex-row justify-end col-span-2 relative">
+            <label className="p-2" htmlFor="country">
+              Country
+            </label>
+            <GlobeAltIcon className="pointer-events-none absolute right-20 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+          <select
+            id="countryName"
+            name="countryName"
+            className="autofocus rounded-lg text-sm col-span-4 focus-outline-none focus:bg-goldOrangeLight"
+            onChange={(e) => handleChange(e, "countries", countries)}
+            defaultValue={company.address.country.name ?? ""}
+          >
+            {countries.map((country) => (
+              <option selected key={country.code} value={country.name}>
+                {country.name ?? ""}
+              </option>
+            ))}
+          </select>
         </div>
-        <select
-          id="countryName"
-          name="countryName"
-          className="autofocus rounded-lg text-sm col-span-3 focus-outline-none focus:bg-goldOrangeLight"
-          onChange={(e) => handleChange(e, "countries", countries)}
-        >
-          {countries.map((country) => (
-            <option key={country.code} value={country.name}>
-              {country.name}
-            </option>
-          ))}
-        </select>
         <div className="grid grid-cols-2 col-span-2">
           <div className="flex items-center relative col-span-1 justify-end">
             <label className="p-2" htmlFor="stateCode">
@@ -72,7 +75,7 @@ export default function AddressForm({ company }: { company: Company }) {
             type="text"
             name="countryCode"
             readOnly
-            value={countryCode}
+            value={countryCode ?? ""}
           />
         </div>
       </div>
@@ -94,7 +97,7 @@ export default function AddressForm({ company }: { company: Company }) {
             {states
               .filter((state) => state.countryCode == countryCode)
               .map((state) => (
-                <option key={state.code} value={state.name}>
+                <option selected key={state.code} value={state.name}>
                   {state.name}
                 </option>
               ))}

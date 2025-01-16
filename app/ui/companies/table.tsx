@@ -3,12 +3,21 @@
 import { Company } from "@/app/lib/definitions";
 import { TableItems } from "./tableItems";
 import ShowMessage from "../show-message";
+import { useMessageAndLoading } from "@/app/dashboard/context/message-context";
+import { useEffect } from "react";
 
 export default function CompaniesTable({
   companies,
 }: {
   companies: Company[];
 }) {
+  const { handleLoading } = useMessageAndLoading();
+
+  useEffect(() => {
+    console.log("Handle loading is running");
+    handleLoading(false, "");
+  }, []);
+
   return (
     <>
       <div className="w-full relative text-sm mt-2 mb-2 rounded-lg bg-gray-200">

@@ -25,21 +25,21 @@ export default function EditCompany({ company }: EditCompanyProps) {
   async function onSubmit(formData: FormData) {
     const response = await updateCompany(company.id, {
       id: company.id as string,
-      name: formData.get("name") as string,
-      country_name: formData.get("countryName") as string,
-      country_code: formData.get("countryCode") as string,
-      state_name: formData.get("stateName") as string,
-      state_code: formData.get("stateCode") as string,
-      post_code: formData.get("postCode") as string,
-      town: formData.get("town") as string,
-      street: formData.get("street") as string,
-      house_no: formData.get("houseNo") as string,
-      flat_no: formData.get("flatNo") as string,
-      email1: formData.get("email1") as string,
-      email2: formData.get("email2") as string,
-      phone1: formData.get("phone1") as string,
-      phone2: formData.get("phone2") as string,
-      web: formData.get("web") as string,
+      name: (formData.get("name") as string) ?? "",
+      country_name: (formData.get("countryName") as string) ?? "",
+      country_code: (formData.get("countryCode") as string) ?? "",
+      state_name: (formData.get("stateName") as string) ?? "",
+      state_code: (formData.get("stateCode") as string) ?? "",
+      post_code: (formData.get("postCode") as string) ?? "",
+      town: (formData.get("town") as string) ?? "",
+      street: (formData.get("street") as string) ?? "",
+      house_no: (formData.get("houseNo") as string) ?? "",
+      flat_no: (formData.get("flatNo") as string) ?? "",
+      email1: (formData.get("email1") as string) ?? "",
+      email2: (formData.get("email2") as string) ?? "",
+      phone1: (formData.get("phone1") as string) ?? "",
+      phone2: (formData.get("phone2") as string) ?? "",
+      web: (formData.get("web") as string) ?? "",
     });
 
     if (!response.error) {
@@ -49,6 +49,7 @@ export default function EditCompany({ company }: EditCompanyProps) {
         type: MessageType.Information,
         show: true,
         redirect: true,
+        redirect_url: "/dashboard/companies",
       });
     } else if (response.error) {
       handleMessage({

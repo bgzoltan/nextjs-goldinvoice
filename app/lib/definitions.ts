@@ -162,6 +162,7 @@ export interface Message {
   content: string;
   show: boolean;
   redirect: boolean;
+  redirect_url: string;
 }
 
 export interface SelectedItem {

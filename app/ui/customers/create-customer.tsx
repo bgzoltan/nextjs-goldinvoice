@@ -45,6 +45,7 @@ export default function CreateCustomerForm() {
         type: MessageType.Information,
         show: true,
         redirect: true,
+        redirect_url: "/dashboard/customers",
       });
     } else if (result.error) {
       handleMessage({

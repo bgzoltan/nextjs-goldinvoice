@@ -19,6 +19,7 @@ const Context = createContext<ContextType>({
     content: "",
     show: false,
     redirect: false,
+    redirect_url: "",
   },
   handleMessage: () => {},
   handleMessageClick: () => {},
@@ -47,6 +48,7 @@ export default function MessageContainer({
     content: "",
     show: false,
     redirect: false,
+    redirect_url: "",
   });
   const [isLoading, setIsLoading] = useState({ state: false, text: "" });
 
@@ -64,7 +66,7 @@ export default function MessageContainer({
     });
     if (message.redirect) {
       handleLoading(true, "Redirecting...");
-      router.push("/dashboard/customers");
+      router.push(message.redirect_url);
     }
   };
   return (

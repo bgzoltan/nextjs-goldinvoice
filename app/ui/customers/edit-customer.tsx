@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ShowMessage from "../show-message";
 import { updateCustomer } from "@/app/lib/actions";
 import { Customer, MessageType } from "@/app/lib/definitions";
@@ -16,6 +16,7 @@ interface EditCustomerProps {
 export default function EditCustomer({ customer }: EditCustomerProps) {
   const router = useRouter();
   const { message, handleMessage, isLoading } = useMessageAndLoading();
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer>(customer);
 
   useEffect(() => {
     // prefetching the route to get faster redirect
@@ -29,7 +30,7 @@ export default function EditCustomer({ customer }: EditCustomerProps) {
     const email = formData.get("email") as string;
     const userImageFile = formData.get("user_image") as File;
 
-    const response = await updateCustomer(customer.id, {
+    const response = await updateCustomer(selectedCustomer.id, {
       name: name,
       firstName: firstName,
       lastName: lastName,
@@ -38,7 +39,7 @@ export default function EditCustomer({ customer }: EditCustomerProps) {
       userImage: userImageFile,
     });
 
-    if (!response) {
+    if (!response.error) {
       handleMessage({
         ...message,
         content: "Form is updated successfully.",
@@ -48,11 +49,14 @@ export default function EditCustomer({ customer }: EditCustomerProps) {
         redirect_url: "/dashboard/customers",
       });
     } else if (response.error) {
+      setSelectedCustomer({ ...selectedCustomer, imageUrl: "" });
       handleMessage({
         ...message,
         content: response.error,
         type: MessageType.Error,
         show: true,
+        redirect: false,
+        redirect_url: "",
       });
     }
   }
@@ -64,7 +68,7 @@ export default function EditCustomer({ customer }: EditCustomerProps) {
           <CustomLoading>{isLoading.text}</CustomLoading>
         </div>
       )}
-      <CustomerForm customer={customer} onSubmit={onSubmit} />
+      <CustomerForm customer={selectedCustomer} onSubmit={onSubmit} />
       <ShowMessage />
     </div>
   );

@@ -57,6 +57,8 @@ export default function EditCompany({ company }: EditCompanyProps) {
         content: response.error,
         type: MessageType.Error,
         show: true,
+        redirect: false,
+        redirect_url: "",
       });
     }
   }

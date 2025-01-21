@@ -4,7 +4,7 @@ import CustomLink from "./ui/custom-link";
 
 export default function Page() {
   return (
-    <main className="flex items-center w-screen min-h-screen flex-col p-6">
+    <main className="flex items-center flex-col p-6">
       <div
         className={`flex ${suse.className} w-full justify-center items-center h-20 text-3xl font-bold shrink-0 rounded-lg bg-goldOrange p-4 md:h-52 white`}
       >

@@ -21,6 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${suse.className} antialiased`}>
         <MessageContainer>{children}</MessageContainer>
+
+        <div
+          id="error-holder"
+          className="h-screen w-screen bg-transparent relative"
+        ></div>
       </body>
     </html>
   );

@@ -203,17 +203,17 @@ export async function updateCustomer(
   });
 
   // email database validation
-  try {
-    const response =
-      await sql`SELECT * FROM customers WHERE (email ILIKE ${email} and name NOT ILIKE ${name}) `;
-    if (response.rows.length !== 0)
-      throw new Error(
-        `The ${name} or the ${email} is already in the database!`
-      );
-  } catch (error) {
-    // Return an error to the client side
-    if (error instanceof Error) return { error: error.message };
-  }
+  // try {
+  //   const response =
+  //     await sql`SELECT * FROM customers WHERE (email ILIKE ${email} and name NOT ILIKE ${name}) `;
+  //   if (response.rows.length !== 0)
+  //     throw new Error(
+  //       `The ${name} or the ${email} is already in the database!`
+  //     );
+  // } catch (error) {
+  //   // Return an error to the client side
+  //   if (error instanceof Error) return { error: error.message };
+  // }
 
   try {
     if (customer.userImage.size > 8000) {
@@ -233,7 +233,7 @@ export async function updateCustomer(
     if (error instanceof Error) {
       return { error: error.message };
     } else {
-      return { error: error };
+      return { error: `Unknown error during updating company: ${error}` };
     }
   }
 
@@ -253,7 +253,7 @@ export async function updateCustomer(
   }
   // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
   revalidatePath("/dashboard/customers");
-  return;
+  return { error: null };
 }
 
 export async function deleteCustomer(id: string) {

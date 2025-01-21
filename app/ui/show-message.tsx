@@ -24,12 +24,9 @@ export default function ShowMessage() {
             className="flex flex-col justify-center items-center min-w-52 p-2 rounded text-white"
             style={{ backgroundColor: bgColor }}
           >
-            <p className="text-lg">{title}</p>
+            <p className="text-lg font-bold">{title}</p>
             <p className="p-1">{message?.content}</p>
-            <CustomButton
-              buttonType="primary"
-              onClick={() => handleMessageClick()}
-            >
+            <CustomButton buttonType="" onClick={() => handleMessageClick()}>
               Close
             </CustomButton>
           </div>
